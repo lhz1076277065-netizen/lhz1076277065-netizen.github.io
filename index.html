@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Bilingual academic website of Hongzhi Lu / 卢鸿志 with research profile and independent software demos." />
+  <meta name="author" content="Hongzhi Lu / 卢鸿志" />
+  <meta name="theme-color" content="#050b16" />
+  <title>Hongzhi Lu 卢鸿志 | AI Sustainability & Environmental Science</title>
+  <style>
+    :root{
+      --bg:#050b16;--bg2:#081827;--surface:rgba(11,27,48,.78);--surface2:rgba(16,38,68,.86);
+      --text:#eaf7ff;--muted:#9eb7cf;--faint:#6e849b;--cyan:#25f4ff;--green:#4dffae;
+      --violet:#bc7cff;--line:rgba(125,211,252,.2);--shadow:0 28px 80px rgba(0,0,0,.5);
+      --glow:0 0 36px rgba(37,244,255,.28);--radius:30px;--max:1200px
+    }
+    *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
+    body{
+      min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      color:var(--text);line-height:1.7;overflow-x:hidden;
+      background:
+        radial-gradient(circle at 12% 6%,rgba(37,244,255,.18),transparent 30%),
+        radial-gradient(circle at 86% 12%,rgba(188,124,255,.18),transparent 34%),
+        radial-gradient(circle at 70% 88%,rgba(77,255,174,.13),transparent 34%),
+        linear-gradient(135deg,#020511 0%,var(--bg) 46%,#061b2a 100%)
+    }
+    body:before{content:"";position:fixed;inset:0;z-index:-3;background-image:linear-gradient(rgba(37,244,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(37,244,255,.04) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,#000,rgba(0,0,0,.38),transparent 92%)}
+    body:after{content:"";pointer-events:none;position:fixed;inset:0;z-index:80;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.018) 0,rgba(255,255,255,.018) 1px,transparent 1px,transparent 4px);mix-blend-mode:overlay;opacity:.5}
+    a{color:inherit;text-decoration:none}.container{width:min(92%,var(--max));margin:0 auto}
+    #network{position:fixed;inset:0;width:100%;height:100%;z-index:-1;opacity:.76;pointer-events:none}
+    .noise{pointer-events:none;position:fixed;inset:0;z-index:-1;opacity:.11;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
+    .orb{position:fixed;width:430px;height:430px;border-radius:999px;filter:blur(64px);opacity:.24;pointer-events:none;z-index:-2;animation:drift 15s ease-in-out infinite alternate}
+    .orb.one{top:10%;left:-170px;background:var(--cyan)}.orb.two{right:-170px;bottom:4%;background:var(--green);animation-delay:-4s}.orb.three{right:22%;top:42%;width:300px;height:300px;background:var(--violet);opacity:.17;animation-delay:-8s}
+    @keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(56px,-42px,0) scale(1.13)}}
+    header{position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(125,211,252,.16);background:rgba(3,8,17,.64);backdrop-filter:blur(22px) saturate(150%)}
+    nav{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:28px}
+    .brand{display:inline-flex;align-items:center;gap:12px;font-weight:950;letter-spacing:-.04em}.brand-mark{width:38px;height:38px;border:1px solid rgba(37,244,255,.54);border-radius:13px;display:grid;place-items:center;color:var(--cyan);background:linear-gradient(135deg,rgba(37,244,255,.12),rgba(77,255,174,.08));box-shadow:var(--glow);font-size:.78rem}.brand-name{display:grid;line-height:1.08}
+    .cn,.brand-cn{display:block;margin-top:3px;color:var(--faint);font-size:.72em;font-weight:700;letter-spacing:.02em;line-height:1.45}.cn-p{display:block;color:var(--faint);font-size:.82rem;line-height:1.7;margin-top:6px}
+    .nav-links{display:flex;align-items:center;gap:8px;list-style:none;font-size:.84rem}.nav-links a{display:grid;justify-items:center;padding:9px 12px;border-radius:999px;color:var(--muted);font-weight:850;line-height:1.1;transition:.22s ease}.nav-links a:hover{color:var(--text);background:rgba(37,244,255,.09);box-shadow:inset 0 0 0 1px rgba(37,244,255,.18)}.nav-links .cn{font-size:.68rem}
+    .glass{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.034)),var(--surface);box-shadow:var(--shadow);backdrop-filter:blur(22px) saturate(130%)}
+    .glass:before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(120deg,transparent 0%,rgba(37,244,255,.15) 16%,transparent 34%),radial-gradient(circle at top left,rgba(77,255,174,.12),transparent 30%);opacity:.8}.glass>*{position:relative;z-index:2}
+    .hero{padding:92px 0 62px}.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:stretch}.hero-card{min-height:640px;padding:clamp(30px,5vw,58px);border-radius:36px;display:flex;flex-direction:column;justify-content:space-between}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;width:fit-content;padding:8px 13px;margin-bottom:26px;border:1px solid rgba(37,244,255,.28);border-radius:999px;background:rgba(37,244,255,.08);color:var(--cyan);font-size:.76rem;font-weight:950;letter-spacing:.16em;text-transform:uppercase;box-shadow:var(--glow)}
+    .pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 18px var(--green);animation:pulse 1.8s ease-in-out infinite}@keyframes pulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.45);opacity:1}}
+    h1{max-width:820px;font-size:clamp(3.4rem,8.4vw,8.2rem);line-height:.83;letter-spacing:-.105em;margin-bottom:18px}.gradient-text{background:linear-gradient(90deg,#fff 0%,var(--cyan) 46%,var(--green) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 48px rgba(37,244,255,.24)}.name-cn-main{display:block;margin:2px 0 26px;color:var(--green);font-size:clamp(1.7rem,3.6vw,3.4rem);font-weight:950;letter-spacing:.14em;text-shadow:0 0 26px rgba(77,255,174,.24)}
+    .hero-subtitle{max-width:770px;color:var(--muted);font-size:clamp(1.04rem,1.8vw,1.24rem);margin-bottom:30px}.hero-subtitle strong{color:var(--text);font-weight:850}
+    .terminal-line{display:grid;gap:3px;margin:22px 0 34px;padding:14px 16px;max-width:780px;border:1px solid rgba(77,255,174,.22);border-radius:16px;background:rgba(0,0,0,.28);color:var(--green);font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:.9rem;box-shadow:inset 0 0 30px rgba(77,255,174,.04)}.terminal-command{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.cursor{display:inline-block;width:8px;height:1.15em;background:var(--green);box-shadow:0 0 16px var(--green);animation:blink .9s steps(2,start) infinite}@keyframes blink{50%{opacity:0}}
+    .actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.btn{position:relative;display:inline-grid;place-items:center;min-height:48px;padding:10px 18px;border-radius:999px;font-weight:950;font-size:.9rem;border:1px solid transparent;isolation:isolate;overflow:hidden;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;line-height:1.12}.btn:before{content:"";position:absolute;inset:0;z-index:-1;transform:translateX(-110%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);transition:transform .55s ease}.btn:hover{transform:translateY(-2px)}.btn:hover:before{transform:translateX(110%)}.btn-primary{color:#03101b;background:linear-gradient(135deg,var(--cyan),var(--green));box-shadow:0 18px 40px rgba(37,244,255,.22)}.btn-secondary{color:var(--text);border-color:rgba(125,211,252,.28);background:rgba(255,255,255,.06)}.btn .cn{font-size:.68rem;color:rgba(3,16,27,.72)}.btn-secondary .cn{color:var(--faint)}
+    .hero-bottom{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:44px}.metric{padding:16px;border-radius:18px;border:1px solid rgba(125,211,252,.16);background:rgba(255,255,255,.045)}.metric-value{display:block;color:var(--cyan);font-size:1.48rem;font-weight:950;letter-spacing:-.04em}.metric-label{display:block;color:var(--muted);font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.metric-label .cn{font-size:.7rem;text-transform:none;letter-spacing:.02em}
+    .profile-panel{padding:26px;min-height:640px;border-radius:36px}.hud{height:100%;display:grid;gap:18px;grid-template-rows:auto auto 1fr auto}.avatar-wrap{position:relative;display:grid;place-items:center;min-height:230px;border:1px solid rgba(37,244,255,.18);border-radius:28px;background:radial-gradient(circle at center,rgba(37,244,255,.15),transparent 54%),rgba(0,0,0,.2);overflow:hidden}.avatar-ring{position:absolute;width:172px;height:172px;border-radius:50%;border:1px dashed rgba(37,244,255,.52);animation:spin 17s linear infinite}.avatar-ring:nth-child(2){width:220px;height:220px;border-color:rgba(77,255,174,.38);animation-duration:25s;animation-direction:reverse}@keyframes spin{to{transform:rotate(360deg)}}.avatar-core{position:relative;z-index:2;width:118px;height:118px;display:grid;place-items:center;border-radius:34px;color:#03101b;background:linear-gradient(135deg,var(--cyan),var(--green));box-shadow:0 0 45px rgba(37,244,255,.36),inset 0 0 18px rgba(255,255,255,.42);font-size:2.3rem;font-weight:950;letter-spacing:-.12em}.scan-label{position:absolute;left:18px;bottom:16px;padding:6px 9px;border-radius:999px;color:var(--green);background:rgba(77,255,174,.08);border:1px solid rgba(77,255,174,.24);font-family:"SFMono-Regular",Consolas,monospace;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase}
+    .profile-title h2{font-size:1.45rem;line-height:1.2;letter-spacing:-.04em;margin-bottom:10px}.profile-title p{color:var(--muted)}.data-stack{display:grid;gap:12px}.data-row{display:grid;grid-template-columns:130px 1fr;gap:10px;padding:13px 14px;border-radius:16px;border:1px solid rgba(125,211,252,.15);background:rgba(255,255,255,.045)}.data-label{color:var(--faint);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-weight:900}.data-value{color:var(--text);font-weight:850;word-break:break-word}.data-value a{color:var(--cyan)}.signal-panel{padding:16px;border-radius:20px;border:1px solid rgba(77,255,174,.18);background:rgba(77,255,174,.045)}.signal-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;color:var(--green);font-family:"SFMono-Regular",Consolas,monospace;font-size:.75rem;text-transform:uppercase;letter-spacing:.12em}.signal-bars{display:grid;gap:8px}.bar{overflow:hidden;height:8px;border-radius:999px;background:rgba(255,255,255,.08)}.bar span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--cyan),var(--green));box-shadow:0 0 18px rgba(77,255,174,.34);animation:loadbar 1.4s ease both}@keyframes loadbar{from{transform:scaleX(0);transform-origin:left}to{transform:scaleX(1);transform-origin:left}}
+    section{padding:50px 0;scroll-margin-top:100px}.section-heading{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:end;margin-bottom:22px}.section-kicker{display:inline-flex;align-items:center;gap:8px;width:fit-content;color:var(--cyan);font-size:.72rem;font-weight:950;letter-spacing:.18em;text-transform:uppercase}.section-heading h2{font-size:clamp(2rem,4vw,3.2rem);line-height:1;letter-spacing:-.07em;margin-top:8px}.section-heading p{color:var(--muted);max-width:690px;justify-self:end}.section-card{border-radius:var(--radius);padding:clamp(22px,3vw,34px)}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .tech-card,.timeline-item,.publication,.skill-card,.award-card,.software-card,.feature-node{position:relative;overflow:hidden;border:1px solid rgba(125,211,252,.17);border-radius:22px;background:rgba(255,255,255,.045);transition:transform .24s ease,border-color .24s ease,background .24s ease,box-shadow .24s ease}.tech-card:hover,.timeline-item:hover,.publication:hover,.skill-card:hover,.award-card:hover,.software-card:hover,.feature-node:hover{transform:translateY(-5px);border-color:rgba(37,244,255,.48);background:rgba(255,255,255,.07);box-shadow:var(--glow)}.tech-card{min-height:270px;padding:24px}.card-index{display:flex;align-items:center;justify-content:space-between;margin-bottom:42px;color:var(--faint);font-family:"SFMono-Regular",Consolas,monospace;font-size:.76rem;letter-spacing:.12em}.card-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:14px;color:#06101d;background:linear-gradient(135deg,var(--cyan),var(--green));box-shadow:0 0 24px rgba(37,244,255,.24);font-weight:950}h3{margin-bottom:10px;line-height:1.2;letter-spacing:-.035em}.tech-card p,.timeline-item p,.publication p,.skill-card li,.award-card li,.software-card p,.feature-node span{color:var(--muted)}
+    .timeline{position:relative;display:grid;gap:18px}.timeline:before{content:"";position:absolute;top:12px;bottom:12px;left:17px;width:1px;background:linear-gradient(to bottom,transparent,rgba(37,244,255,.6),rgba(77,255,174,.48),transparent)}.timeline-item{margin-left:36px;padding:24px}.timeline-item:before{content:"";position:absolute;left:-28px;top:28px;width:13px;height:13px;border-radius:50%;background:var(--cyan);box-shadow:0 0 20px var(--cyan)}.item-top{display:flex;justify-content:space-between;gap:18px;margin-bottom:8px}.meta{color:var(--green);font-family:"SFMono-Regular",Consolas,monospace;font-size:.82rem;font-weight:900;white-space:nowrap}.institution{color:var(--cyan);font-weight:850;margin-bottom:10px}.tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.tag{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;border:1px solid rgba(125,211,252,.18);background:rgba(255,255,255,.052);color:var(--cyan);font-size:.74rem;font-weight:900;letter-spacing:.03em}.tag:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}.publication-list{display:grid;gap:16px}.publication{padding:24px}.publication a{display:inline-grid;margin-top:10px;color:var(--cyan);font-weight:900}
+    .software-grid{display:grid;gap:28px}.software-card{padding:0;border-radius:30px}.software-showcase{display:grid;grid-template-columns:.9fr 1.1fr;gap:0;min-height:760px}.software-copy{padding:clamp(24px,3.4vw,38px);display:flex;flex-direction:column;justify-content:space-between;gap:24px;background:radial-gradient(circle at 100% 0%,rgba(77,255,174,.12),transparent 34%)}.software-title{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:12px}.software-badge{color:#06101d;background:linear-gradient(135deg,var(--cyan),var(--green));border-radius:999px;padding:7px 11px;font-size:.74rem;font-weight:950;white-space:nowrap}.feature-matrix{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:20px}.feature-node{min-height:92px;padding:14px}.feature-node strong{display:block;color:var(--text);font-size:.88rem;margin-bottom:4px}.feature-node span{display:block;font-size:.76rem;line-height:1.45}.demo-panel{position:relative;overflow:hidden;min-height:760px;border-left:1px solid rgba(125,211,252,.18);background:radial-gradient(circle at 50% 0%,rgba(37,244,255,.2),transparent 38%),linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.025))}.demo-panel:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(37,244,255,.08),transparent),repeating-linear-gradient(to bottom,rgba(255,255,255,.03) 0,rgba(255,255,255,.03) 1px,transparent 1px,transparent 7px);pointer-events:none;z-index:2;opacity:.75}.demo-toolbar{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 18px;border-bottom:1px solid rgba(125,211,252,.18);background:rgba(3,10,20,.62);backdrop-filter:blur(18px)}.demo-status{display:inline-flex;align-items:center;gap:9px;color:var(--green);font-family:"SFMono-Regular",Consolas,monospace;font-size:.74rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.demo-frame-wrap{position:relative;z-index:1;display:grid;place-items:center;padding:28px;min-height:694px}.device-shell{width:min(100%,414px);height:640px;border-radius:42px;padding:10px;background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.16);box-shadow:0 24px 70px rgba(0,0,0,.42),0 0 44px rgba(37,244,255,.14)}.device-screen{width:100%;height:100%;overflow:hidden;border-radius:32px;border:1px solid rgba(37,244,255,.24);background:#06101d}.app-iframe{width:100%;height:100%;border:0;display:block;background:#ecfdf5}.demo-note{margin-top:16px;padding:14px 16px;border-radius:18px;color:var(--muted);background:rgba(255,255,255,.052);border:1px solid rgba(125,211,252,.16);font-size:.9rem}
+    .skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.skill-card{padding:22px}.skill-card ul,.award-card ul{padding-left:1.05rem}li+li{margin-top:8px}.award-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:18px}.award-card{padding:24px}.conference-chip{display:flex;align-items:center;gap:14px;padding:18px;border-radius:20px;border:1px solid rgba(77,255,174,.18);background:rgba(77,255,174,.05);margin-top:18px}.chip-icon{width:48px;height:48px;flex:0 0 auto;display:grid;place-items:center;border-radius:16px;background:linear-gradient(135deg,var(--green),var(--cyan));color:#04111d;font-weight:950}
+    .contact-panel{position:relative;overflow:hidden;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;padding:clamp(28px,4vw,44px);border-radius:34px;border:1px solid rgba(37,244,255,.26);background:radial-gradient(circle at 20% 0%,rgba(37,244,255,.2),transparent 36%),radial-gradient(circle at 85% 100%,rgba(77,255,174,.16),transparent 36%),rgba(255,255,255,.055);box-shadow:var(--shadow),var(--glow)}.contact-panel h2{font-size:clamp(2rem,5vw,4.2rem);line-height:.95;letter-spacing:-.08em;margin-bottom:12px}.contact-panel p{color:var(--muted);max-width:740px}footer{padding:38px 0 54px;color:var(--faint);text-align:center;font-size:.88rem}.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:translateY(0)}.magnetic{transform-style:preserve-3d}
+    @media(max-width:1080px){.hero-grid,.software-showcase,.award-grid{grid-template-columns:1fr}.profile-panel,.hero-card{min-height:auto}.demo-panel{border-left:0;border-top:1px solid rgba(125,211,252,.18)}.skills-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:820px){.nav-links{display:none}.hero{padding-top:62px}.hero-bottom,.grid-3,.grid-2,.skills-grid,.contact-panel,.feature-matrix{grid-template-columns:1fr}.section-heading{grid-template-columns:1fr;gap:10px}.section-heading p{justify-self:start}.item-top,.contact-panel,.software-title{align-items:start;flex-direction:column}.meta{white-space:normal}.timeline:before{left:9px}.timeline-item{margin-left:22px}.timeline-item:before{left:-20px}.demo-frame-wrap{padding:16px;min-height:640px}.device-shell{height:600px;border-radius:34px}.device-screen{border-radius:26px}h1{letter-spacing:-.09em}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+  
+
+    /* =========================================================
+       Compact Density Patch v2
+       Purpose: reduce first-screen module/font scale so the
+       homepage shows more content on default desktop view.
+       ========================================================= */
+    @media (min-width: 821px) {
+      :root {
+        --max: 1320px;
+        --radius: 24px;
+      }
+
+      body {
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .container {
+        width: min(94%, var(--max));
+      }
+
+      nav {
+        min-height: 62px;
+      }
+
+      .brand {
+        gap: 10px;
+      }
+
+      .brand-mark {
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        font-size: 0.7rem;
+      }
+
+      .brand-name {
+        font-size: 0.92rem;
+        line-height: 1.05;
+      }
+
+      .brand-cn,
+      .nav-links .cn,
+      .metric-label .cn,
+      .data-label .cn,
+      .data-value .cn,
+      .section-kicker .cn,
+      .tag .cn,
+      .software-badge .cn,
+      footer .cn {
+        font-size: 0.66rem;
+        margin-top: 1px;
+      }
+
+      .nav-links {
+        gap: 4px;
+        font-size: 0.78rem;
+      }
+
+      .nav-links a {
+        padding: 7px 10px;
+      }
+
+      .hero {
+        padding: 48px 0 30px;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1.04fr 0.96fr;
+        gap: 18px;
+      }
+
+      .hero-card {
+        min-height: 458px;
+        padding: 32px 38px;
+        border-radius: 28px;
+      }
+
+      .eyebrow {
+        padding: 6px 11px;
+        margin-bottom: 18px;
+        font-size: 0.68rem;
+        letter-spacing: 0.13em;
+      }
+
+      .pulse-dot {
+        width: 7px;
+        height: 7px;
+      }
+
+      h1 {
+        max-width: 650px;
+        font-size: clamp(2.65rem, 5.15vw, 5.75rem);
+        line-height: 0.88;
+        letter-spacing: -0.09em;
+        margin-bottom: 8px;
+      }
+
+      .name-cn-main {
+        margin: 0 0 14px;
+        font-size: clamp(1.25rem, 2.05vw, 2.15rem);
+        letter-spacing: 0.1em;
+      }
+
+      .hero-subtitle {
+        max-width: 705px;
+        font-size: 0.95rem;
+        margin-bottom: 16px;
+      }
+
+      .cn-p {
+        display: block;
+        margin-top: 4px;
+        font-size: 0.72rem;
+        line-height: 1.45;
+      }
+
+      .terminal-line {
+        margin: 12px 0 18px;
+        padding: 10px 12px;
+        border-radius: 13px;
+        font-size: 0.76rem;
+      }
+
+      .btn {
+        min-height: 38px;
+        padding: 8px 13px;
+        font-size: 0.78rem;
+      }
+
+      .hero-bottom {
+        margin-top: 22px;
+        gap: 10px;
+      }
+
+      .metric {
+        padding: 10px 12px;
+        border-radius: 14px;
+      }
+
+      .metric-value {
+        font-size: 1.12rem;
+      }
+
+      .metric-label {
+        font-size: 0.68rem;
+        letter-spacing: 0.06em;
+      }
+
+      .profile-panel {
+        min-height: 458px;
+        padding: 18px;
+        border-radius: 28px;
+      }
+
+      .hud {
+        gap: 12px;
+      }
+
+      .avatar-wrap {
+        min-height: 156px;
+        border-radius: 22px;
+      }
+
+      .avatar-ring {
+        width: 112px;
+        height: 112px;
+      }
+
+      .avatar-ring:nth-child(2) {
+        width: 150px;
+        height: 150px;
+      }
+
+      .avatar-core {
+        width: 82px;
+        height: 82px;
+        border-radius: 24px;
+        font-size: 1.65rem;
+      }
+
+      .scan-label {
+        left: 12px;
+        bottom: 10px;
+        padding: 4px 7px;
+        font-size: 0.56rem;
+        letter-spacing: 0.1em;
+      }
+
+      .profile-title h2 {
+        font-size: 1.08rem;
+        margin-bottom: 6px;
+      }
+
+      .profile-title p {
+        font-size: 0.86rem;
+      }
+
+      .data-stack {
+        gap: 8px;
+      }
+
+      .data-row {
+        grid-template-columns: 102px 1fr;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 13px;
+      }
+
+      .data-label {
+        font-size: 0.62rem;
+        letter-spacing: 0.08em;
+      }
+
+      .data-value {
+        font-size: 0.82rem;
+      }
+
+      .signal-panel {
+        padding: 10px;
+        border-radius: 15px;
+      }
+
+      .signal-top {
+        margin-bottom: 8px;
+        font-size: 0.62rem;
+        letter-spacing: 0.1em;
+      }
+
+      .signal-bars {
+        gap: 6px;
+      }
+
+      .bar {
+        height: 6px;
+      }
+
+      section {
+        padding: 34px 0;
+        scroll-margin-top: 78px;
+      }
+
+      .section-heading {
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .section-kicker {
+        font-size: 0.62rem;
+        letter-spacing: 0.14em;
+      }
+
+      .section-heading h2 {
+        font-size: clamp(1.55rem, 2.6vw, 2.35rem);
+        letter-spacing: -0.055em;
+        margin-top: 5px;
+      }
+
+      .section-heading p {
+        max-width: 650px;
+        font-size: 0.9rem;
+      }
+
+      .section-card {
+        padding: clamp(18px, 2vw, 26px);
+        border-radius: 22px;
+      }
+
+      .grid-3,
+      .grid-2,
+      .software-grid,
+      .skills-grid,
+      .award-grid {
+        gap: 14px;
+      }
+
+      .tech-card {
+        min-height: 190px;
+        padding: 18px;
+        border-radius: 18px;
+      }
+
+      .card-index {
+        margin-bottom: 24px;
+        font-size: 0.64rem;
+      }
+
+      .card-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 11px;
+        font-size: 0.72rem;
+      }
+
+      .timeline-item,
+      .publication,
+      .skill-card,
+      .award-card,
+      .software-copy {
+        padding: 18px;
+        border-radius: 18px;
+      }
+
+      .timeline::before {
+        left: 14px;
+      }
+
+      .timeline-item {
+        margin-left: 30px;
+      }
+
+      .timeline-item::before {
+        left: -23px;
+        top: 25px;
+        width: 10px;
+        height: 10px;
+      }
+
+      .item-top {
+        gap: 12px;
+        margin-bottom: 5px;
+      }
+
+      .meta,
+      .institution {
+        font-size: 0.78rem;
+      }
+
+      .tag-row {
+        gap: 6px;
+        margin-top: 12px;
+      }
+
+      .tag {
+        padding: 5px 8px;
+        font-size: 0.66rem;
+      }
+
+      .software-showcase {
+        grid-template-columns: 0.94fr 1.06fr;
+        gap: 0;
+      }
+
+      .software-card {
+        border-radius: 24px;
+      }
+
+      .software-title h3 {
+        font-size: 1.25rem;
+      }
+
+      .software-badge {
+        padding: 5px 8px;
+        font-size: 0.62rem;
+      }
+
+      .feature-matrix {
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .feature-node {
+        min-height: 64px;
+        padding: 11px;
+        border-radius: 13px;
+      }
+
+      .feature-node strong {
+        font-size: 0.76rem;
+      }
+
+      .feature-node span {
+        font-size: 0.67rem;
+      }
+
+      .demo-note {
+        margin-top: 12px;
+        padding: 10px 12px;
+        font-size: 0.76rem;
+        border-radius: 14px;
+      }
+
+      .demo-toolbar {
+        padding: 12px 14px;
+      }
+
+      .demo-status {
+        font-size: 0.62rem;
+      }
+
+      .demo-frame-wrap {
+        padding: 18px;
+        min-height: 560px;
+      }
+
+      .device-shell {
+        width: min(100%, 390px);
+        height: 535px;
+        border-radius: 34px;
+        padding: 8px;
+      }
+
+      .device-screen {
+        border-radius: 26px;
+      }
+
+      .skills-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .skill-card h3,
+      .award-card h3,
+      .publication h3,
+      .timeline-item h3,
+      .tech-card h3 {
+        font-size: 1rem;
+        margin-bottom: 7px;
+      }
+
+      .contact-panel {
+        padding: 28px 32px;
+        border-radius: 26px;
+      }
+
+      .contact-panel h2 {
+        font-size: clamp(1.8rem, 3.4vw, 3rem);
+      }
+
+      footer {
+        padding: 26px 0 36px;
+        font-size: 0.78rem;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .hero {
+        padding-top: 42px;
+      }
+
+      .hero-card,
+      .profile-panel {
+        min-height: 438px;
+      }
+
+      .avatar-wrap {
+        min-height: 148px;
+      }
+    }
+
+  
+
+    /* =========================================================
+       Name/photo patch
+       - Keep Hongzhi Lu on one line on desktop.
+       - Replace HL profile block with the uploaded academic photo.
+       ========================================================= */
+    .hero-name {
+      white-space: nowrap;
+      max-width: 100%;
+      font-size: clamp(2.35rem, 4.55vw, 5.25rem) !important;
+      line-height: 0.92 !important;
+      letter-spacing: -0.078em !important;
+      margin-bottom: 8px !important;
+    }
+
+    .avatar-core {
+      overflow: hidden;
+      padding: 0;
+      background: rgba(3, 16, 27, 0.62) !important;
+      border: 2px solid rgba(37, 244, 255, 0.5);
+    }
+
+    .avatar-photo {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center 34%;
+      border-radius: inherit;
+      filter: saturate(1.04) contrast(1.03);
+    }
+
+    @media (min-width: 821px) {
+      .hero-name {
+        font-size: clamp(2.2rem, 4.1vw, 4.8rem) !important;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .hero-name {
+        white-space: nowrap;
+        font-size: clamp(2.05rem, 10.5vw, 3.7rem) !important;
+        letter-spacing: -0.07em !important;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <canvas id="network" aria-hidden="true"></canvas><div class="noise" aria-hidden="true"></div><div class="orb one" aria-hidden="true"></div><div class="orb two" aria-hidden="true"></div><div class="orb three" aria-hidden="true"></div>
+  <header><nav class="container" aria-label="Main navigation"><a class="brand" href="#top" aria-label="Hongzhi Lu home"><span class="brand-mark">HL</span><span class="brand-name">Hongzhi Lu<span class="brand-cn">卢鸿志</span></span></a><ul class="nav-links"><li><a href="#research">Research<span class="cn">研究方向</span></a></li><li><a href="#education">Education<span class="cn">教育背景</span></a></li><li><a href="#publications">Publications<span class="cn">论文专利</span></a></li><li><a href="#software">Software<span class="cn">软件体验</span></a></li><li><a href="#skills">Skills<span class="cn">技术能力</span></a></li><li><a href="#contact">Contact<span class="cn">联系方式</span></a></li></ul></nav></header>
+
+  <main id="top">
+    <section class="hero"><div class="container hero-grid">
+      <article class="hero-card glass magnetic reveal"><div>
+        <div class="eyebrow"><span class="pulse-dot"></span> AI Sustainability Research Node<span class="cn">人工智能可持续发展研究节点</span></div>
+        <h1 class="hero-name"><span class="gradient-text">Hongzhi Lu</span></h1><span class="name-cn-main">卢鸿志</span>
+        <p class="hero-subtitle">M.Sc. student in <strong>Environmental Science</strong> at Universiti Sains Malaysia, researching generative AI inference carbon footprints, lifecycle assessment, green computing policy, atmospheric pollution modeling, and sustainable environmental management.<span class="cn-p">马来西亚理科大学环境科学硕士研究生，研究方向包括生成式人工智能推理碳足迹、生命周期评估、绿色计算政策、大气污染扩散建模与可持续环境管理。</span></p>
+        <div class="terminal-line" aria-label="Research command line"><div class="terminal-command"><span>&gt;</span><span>running carbon_model --scope GenAI --region Malaysia</span><span class="cursor" aria-hidden="true"></span></div><span class="cn">正在运行碳排放模型：范围为生成式人工智能，区域为马来西亚。</span></div>
+        <div class="actions"><a class="btn btn-primary" href="mailto:lhz1076277065@gmail.com">Initiate Contact<span class="cn">联系我</span></a><a class="btn btn-secondary" href="CV.pdf" target="_blank" rel="noopener">Download CV<span class="cn">下载简历</span></a><a class="btn btn-secondary" href="#software">Try My Software<span class="cn">体验我的软件</span></a><a class="btn btn-secondary" href="#publications">View Research Output<span class="cn">查看学术成果</span></a></div>
+      </div><div class="hero-bottom" aria-label="Academic metrics"><div class="metric"><span class="metric-value">02</span><span class="metric-label">2026 Publications<span class="cn">2026 年论文</span></span></div><div class="metric"><span class="metric-value">02</span><span class="metric-label">Independent Apps<span class="cn">独立开发软件</span></span></div><div class="metric"><span class="metric-value">01</span><span class="metric-label">Patent<span class="cn">专利</span></span></div></div></article>
+      <aside class="profile-panel glass magnetic reveal" aria-label="Profile dashboard"><div class="hud"><div class="avatar-wrap"><div class="avatar-ring"></div><div class="avatar-ring"></div><div class="avatar-core"><img class="avatar-photo" src="profile-photo.jpg" alt="Hongzhi Lu / 卢鸿志 profile photo"></div><div class="scan-label">Profile Scan · Verified<span class="cn">档案扫描 · 已验证</span></div></div><div class="profile-title"><h2>Environmental Science × AI Carbon Intelligence<span class="cn">环境科学 × 人工智能碳智能</span></h2><p>Research profile structured around lifecycle carbon modeling, environmental policy, data analysis, and sustainability software prototyping.<span class="cn-p">研究画像聚焦于生命周期碳建模、环境政策、数据分析和可持续发展软件原型开发。</span></p></div><div class="data-stack"><div class="data-row"><span class="data-label">Affiliation<span class="cn">所属机构</span></span><span class="data-value">Universiti Sains Malaysia<span class="cn">马来西亚理科大学</span></span></div><div class="data-row"><span class="data-label">Location<span class="cn">地点</span></span><span class="data-value">Penang, Malaysia<span class="cn">马来西亚槟城</span></span></div><div class="data-row"><span class="data-label">Email<span class="cn">邮箱</span></span><span class="data-value"><a href="mailto:lhz1076277065@gmail.com">lhz1076277065@gmail.com</a></span></div></div><div class="signal-panel"><div class="signal-top"><span>Research Signal<span class="cn">研究信号</span></span><span>Active<span class="cn">活跃</span></span></div><div class="signal-bars" aria-hidden="true"><div class="bar"><span style="width:92%"></span></div><div class="bar"><span style="width:78%"></span></div><div class="bar"><span style="width:86%"></span></div></div></div></div></aside>
+    </div></section>
+
+    <section id="research"><div class="container"><div class="section-heading reveal"><div><span class="section-kicker"><span class="pulse-dot"></span> Research Vector<span class="cn">研究向量</span></span><h2>Research Interests<span class="cn">研究方向</span></h2></div><p>Interdisciplinary research connecting AI infrastructure, lifecycle assessment, climate impact evaluation, environmental modeling, and sustainability governance.<span class="cn-p">跨学科研究连接人工智能基础设施、生命周期评估、气候影响评价、环境建模和可持续治理。</span></p></div><div class="grid-3">
+      <article class="tech-card reveal magnetic"><div class="card-index"><span>VECTOR 01<span class="cn">向量 01</span></span><span class="card-icon">AI</span></div><h3>AI & Sustainability<span class="cn">人工智能与可持续发展</span></h3><p>Lifecycle assessment of generative AI, LLM carbon modeling, carbon usage effectiveness standards, and green computing policy.<span class="cn-p">生成式人工智能生命周期评估、大语言模型碳排放建模、碳使用效率标准与绿色计算政策。</span></p></article>
+      <article class="tech-card reveal magnetic"><div class="card-index"><span>VECTOR 02<span class="cn">向量 02</span></span><span class="card-icon">ATM</span></div><h3>Atmospheric Science<span class="cn">大气科学</span></h3><p>Pollution dispersion modeling and forecasting environmental impacts under renewable-energy and grid-transition scenarios.<span class="cn-p">污染扩散建模，以及可再生能源与电网转型情景下的环境影响预测。</span></p></article>
+      <article class="tech-card reveal magnetic"><div class="card-index"><span>VECTOR 03<span class="cn">向量 03</span></span><span class="card-icon">ECO</span></div><h3>Sustainable Development<span class="cn">可持续发展</span></h3><p>Environmental policy analysis, hydrogeology, watershed management, land carrying capacity, and urban sustainability assessment.<span class="cn-p">环境政策分析、水文地质、流域管理、土地承载力与城市可持续性评估。</span></p></article>
+    </div></div></section>
+
+    <section id="education"><div class="container"><div class="section-heading reveal"><div><span class="section-kicker"><span class="pulse-dot"></span> Academic Pathway<span class="cn">学术路径</span></span><h2>Education<span class="cn">教育背景</span></h2></div><p>Training across environmental science, land resource management, atmospheric science, environmental law, hydrogeology, and scientific writing.<span class="cn-p">接受过环境科学、土地资源管理、大气科学、环境法、水文地质和科学写作等训练。</span></p></div><div class="section-card glass reveal"><div class="timeline">
+      <article class="timeline-item magnetic"><div class="item-top"><h3>Master of Science in Environmental Science<span class="cn">环境科学理学硕士</span></h3><span class="meta">Oct 2025 → Expected Jul 2026<span class="cn">2025 年 10 月 → 预计 2026 年 7 月</span></span></div><div class="institution">Universiti Sains Malaysia · Penang, Malaysia<span class="cn">马来西亚理科大学 · 马来西亚槟城</span></div><p>Advisor: Assoc. Prof. Dr. Mohamad Anuar Bin Kamaruddin. Thesis in progress. Language of instruction: English.<span class="cn-p">导师：Assoc. Prof. Dr. Mohamad Anuar Bin Kamaruddin。论文进行中。授课语言：英语。</span></p></article>
+      <article class="timeline-item magnetic"><div class="item-top"><h3>Bachelor of Management · Land Resource Management<span class="cn">管理学学士 · 土地资源管理专业</span></h3><span class="meta">Sep 2021 → Jul 2025<span class="cn">2021 年 9 月 → 2025 年 7 月</span></span></div><div class="institution">Shenyang Jianzhu University · Liaoning, China<span class="cn">沈阳建筑大学 · 中国辽宁</span></div><p>Core coursework included Atmospheric Science, Environmental Law, Sampling Technology, Hydrogeology, and Scientific Writing.<span class="cn-p">核心课程包括大气科学、环境法、采样技术、水文地质和科学写作。</span></p></article>
+    </div></div></div></section>
+
+    <section id="publications"><div class="container"><div class="section-heading reveal"><div><span class="section-kicker"><span class="pulse-dot"></span> Output Archive<span class="cn">成果档案</span></span><h2>Publications & Patent<span class="cn">论文与专利</span></h2></div><p>Published work on AI-enabled environmental management, generative AI inference emissions, and land resource detection technology.<span class="cn-p">已发表成果涉及人工智能赋能环境管理、生成式人工智能推理排放与土地资源检测技术。</span></p></div><div class="section-card glass reveal"><div class="publication-list">
+      <article class="publication magnetic"><h3>Adaptive Ecosystems & AI Environmental Management<span class="cn">自适应生态系统与人工智能环境管理</span></h3><p><strong>Lu, H., & Lu, H. (2026).</strong> Transitioning to Adaptive Ecosystems: The Role of Artificial Intelligence in Sustainable Environmental Management and Pollution Control. <em>Journal of Technology and Humanities, 7</em>(1).<span class="cn-p">论文讨论人工智能在可持续环境管理和污染控制中的作用。</span></p><a href="https://doi.org/10.53797/jthkkss.v7i1.1.2026" target="_blank" rel="noopener">DOI: 10.53797/jthkkss.v7i1.1.2026<span class="cn">数字对象标识符</span></a></article>
+      <article class="publication magnetic"><h3>Generative AI Inference Carbon Emissions<span class="cn">生成式人工智能推理碳排放</span></h3><p><strong>Lu, H., & Lu, H. (2026).</strong> Empirical Lifecycle Assessment of Generative AI Inference Carbon Emissions: Global Trends and the Malaysian “Carbon Arbitrage” Risk (2023–2030). <em>Uniglobal Journal of Social Sciences and Humanities, 5</em>(17).<span class="cn-p">论文评估生成式人工智能推理碳排放的全球趋势与马来西亚“碳套利”风险。</span></p><a href="https://doi.org/10.53797/ujssh.v5i17.1.2026" target="_blank" rel="noopener">DOI: 10.53797/ujssh.v5i17.1.2026<span class="cn">数字对象标识符</span></a></article>
+      <article class="publication magnetic"><h3>Land Resource Detector Patent<span class="cn">土地资源探测器专利</span></h3><p><strong>Lu, H. (2023).</strong> Patent: A new type of land resource detector. State Intellectual Property Office of P.R. China.<span class="cn-p">卢鸿志 2023 年获得“一种新型土地资源探测器”专利。</span></p><div class="tag-row"><span class="tag">Patent No: ZL202130777758.7<span class="cn">专利号</span></span></div></article>
+    </div></div></div></section>
+
+    <section id="research-experience"><div class="container"><div class="section-heading reveal"><div><span class="section-kicker"><span class="pulse-dot"></span> Research Engine<span class="cn">研究引擎</span></span><h2>Research Experience<span class="cn">研究经历</span></h2></div><p>Selected thesis and applied research experience in AI carbon accounting, lifecycle assessment, and urban land carrying capacity modeling.<span class="cn-p">代表性研究经历包括人工智能碳核算、生命周期评估和城市土地承载力建模。</span></p></div><div class="section-card glass reveal"><div class="timeline">
+      <article class="timeline-item magnetic"><div class="item-top"><h3>Lifecycle Assessment of Generative AI Inference Carbon Emissions<span class="cn">生成式人工智能推理碳排放生命周期评估</span></h3><span class="meta">Oct 2025 → Present<span class="cn">2025 年 10 月至今</span></span></div><div class="institution">Universiti Sains Malaysia · Master's Thesis<span class="cn">马来西亚理科大学 · 硕士论文</span></div><p>Conducting a bottom-up attributional lifecycle assessment of generative AI inference carbon footprints to quantify Malaysia’s digital carbon arbitrage risks and propose Carbon Usage Effectiveness standards.<span class="cn-p">开展自下而上的归因型生命周期评估，量化生成式人工智能推理碳足迹，识别马来西亚数字碳套利风险，并提出碳使用效率标准。</span></p><div class="tag-row"><span class="tag">A-LCA<span class="cn">归因生命周期评估</span></span><span class="tag">GenAI Inference<span class="cn">生成式 AI 推理</span></span><span class="tag">Carbon Modeling<span class="cn">碳建模</span></span></div></article>
+      <article class="timeline-item magnetic"><div class="item-top"><h3>Comprehensive Carrying Capacity of Land in Dalian City<span class="cn">大连市土地综合承载力研究</span></h3><span class="meta">Sep 2024 → Jun 2025<span class="cn">2024 年 9 月 → 2025 年 6 月</span></span></div><div class="institution">Shenyang Jianzhu University · Bachelor's Thesis<span class="cn">沈阳建筑大学 · 本科论文</span></div><p>Assessed urban land carrying capacity using a 17-indicator Entropy Weight Method and produced policy recommendations for green infrastructure and spatial layout optimization.<span class="cn-p">使用 17 项指标的熵权法评估城市土地承载力，并提出绿色基础设施和空间布局优化建议。</span></p><div class="tag-row"><span class="tag">Entropy Weight Method<span class="cn">熵权法</span></span><span class="tag">Urban Sustainability<span class="cn">城市可持续性</span></span></div></article>
+    </div></div></div></section>
+
+    <section id="software"><div class="container"><div class="section-heading reveal"><div><span class="section-kicker"><span class="pulse-dot"></span> Independent Software Lab<span class="cn">独立软件实验室</span></span><h2>Interactive Software<span class="cn">可交互软件体验</span></h2></div><p>Both applications below were independently developed by Hongzhi Lu. Visitors can experience them directly inside the academic website or open each app in fullscreen mode.<span class="cn-p">以下两个应用均由卢鸿志独立开发。访客可以在学术网站内直接体验，也可以打开全屏模式使用。</span></p></div><div class="software-grid">
+
+      <article class="software-card glass reveal" id="eco-scan-monster"><div class="software-showcase"><div class="software-copy"><div><div class="software-title"><h3>Eco Scan Monster<span class="cn">生态扫描怪兽</span></h3><span class="software-badge">Independent Development<span class="cn">独立开发</span></span></div><div class="institution">Sustainability Mobile Application · Developed by Hongzhi Lu<span class="cn">可持续发展移动应用 · 卢鸿志独立开发</span></div><p>Eco Scan Monster uses photo-based AI vision to analyze waste or eco-items, assign an environmental impact score, and guide users toward responsible recycling and disposal actions.<span class="cn-p">Eco Scan Monster 使用基于照片的人工智能视觉分析废弃物或环保物品，生成环境影响评分，并引导用户进行负责任的回收与处理。</span></p><div class="feature-matrix"><div class="feature-node"><strong>AI Vision Scan<span class="cn">人工智能视觉扫描</span></strong><span>Photo-based item recognition with TensorFlow.js and MobileNet fallback logic.<span class="cn">基于照片识别物品，并使用 TensorFlow.js 与 MobileNet 兜底逻辑。</span></span></div><div class="feature-node"><strong>Eco Score<span class="cn">环境评分</span></strong><span>Material impact scoring from 1 to 10 with disposal guidance.<span class="cn">根据材料影响给出 1 到 10 分，并提供处理建议。</span></span></div><div class="feature-node"><strong>Monster Evolution<span class="cn">怪兽成长系统</span></strong><span>XP, levels, outfits, animation states, and behavioral reinforcement.<span class="cn">经验值、等级、装扮、动画状态与行为激励机制。</span></span></div><div class="feature-node"><strong>Eco Certificates<span class="cn">环保证书</span></strong><span>Milestone recognition for repeated sustainable actions.<span class="cn">根据持续环保行为解锁阶段性证书。</span></span></div></div></div><div><div class="tag-row"><span class="tag">AI Vision<span class="cn">人工智能视觉</span></span><span class="tag">Gamification<span class="cn">游戏化</span></span><span class="tag">TensorFlow.js<span class="cn">浏览器端 AI</span></span></div><p class="demo-note">For full camera and file-upload behavior, deploy through HTTPS. GitHub Pages provides HTTPS by default.<span class="cn-p">如需完整相机和文件上传体验，请通过 HTTPS 部署。GitHub Pages 默认支持 HTTPS。</span></p></div></div><div class="demo-panel"><div class="demo-toolbar"><div class="demo-status"><span class="pulse-dot"></span> App Runtime · Embedded<span class="cn">应用运行时 · 已嵌入</span></div><a class="btn btn-secondary" href="eco-scan-monster.html" target="_blank" rel="noopener">Open Fullscreen<span class="cn">全屏打开</span></a></div><div class="demo-frame-wrap"><div class="device-shell"><div class="device-screen"><iframe class="app-iframe" title="Eco Scan Monster interactive demo" src="eco-scan-monster.html" loading="lazy" allow="camera; clipboard-write; web-share"></iframe></div></div></div></div></div></article>
+
+      <article class="software-card glass reveal" id="human-battery-baby"><div class="software-showcase"><div class="software-copy"><div><div class="software-title"><h3>Human Battery Baby<span class="cn">人体电池宝宝</span></h3><span class="software-badge">Independent Development<span class="cn">独立开发</span></span></div><div class="institution">Health Gamification Application · Developed by Hongzhi Lu<span class="cn">健康游戏化应用 · 卢鸿志独立开发</span></div><p>Human Battery Baby transforms personal energy management into a playful battery-pet interface. It estimates daily energy capacity with BMR/TDEE logic and turns eating, exercise, sleep, and health guidance into interactive charging and discharging actions.<span class="cn-p">人体电池宝宝将个人能量管理转化为电池宠物界面。软件基于 BMR/TDEE 逻辑估算每日能量池，并把饮食、运动、睡眠和健康建议转化为可互动的充放电体验。</span></p><div class="feature-matrix"><div class="feature-node"><strong>TDEE Energy Pool<span class="cn">TDEE 能量池</span></strong><span>Models daily energy capacity based on profile data and activity level.<span class="cn">根据个人数据与活动水平估算每日能量容量。</span></span></div><div class="feature-node"><strong>Food Charging<span class="cn">吃饭充电</span></strong><span>Converts food intake into energy recharge events.<span class="cn">将食物摄入转化为电量补充事件。</span></span></div><div class="feature-node"><strong>Exercise Drain<span class="cn">运动耗电</span></strong><span>Represents activity as battery consumption using MET-style logic.<span class="cn">用类似 MET 的逻辑把运动表现为电量消耗。</span></span></div><div class="feature-node"><strong>Health Companion<span class="cn">健康管家</span></strong><span>Provides playful health-management feedback through a pet interface.<span class="cn">通过宠物界面提供游戏化健康管理反馈。</span></span></div></div></div><div><div class="tag-row"><span class="tag">Health App<span class="cn">健康应用</span></span><span class="tag">TDEE<span class="cn">每日总能量消耗</span></span><span class="tag">Gamified Wellness<span class="cn">游戏化健康</span></span></div><p class="demo-note">This prototype is for educational and behavioral-awareness purposes, not medical diagnosis or clinical guidance.<span class="cn-p">该原型用于教育展示和行为意识提升，不用于医学诊断或临床指导。</span></p></div></div><div class="demo-panel"><div class="demo-toolbar"><div class="demo-status"><span class="pulse-dot"></span> App Runtime · Embedded<span class="cn">应用运行时 · 已嵌入</span></div><a class="btn btn-secondary" href="human-battery-baby.html" target="_blank" rel="noopener">Open Fullscreen<span class="cn">全屏打开</span></a></div><div class="demo-frame-wrap"><div class="device-shell"><div class="device-screen"><iframe class="app-iframe" title="Human Battery Baby interactive demo" src="human-battery-baby.html" loading="lazy" allow="camera; clipboard-write; web-share"></iframe></div></div></div></div></div></article>
+
+    </div></div></section>
+
+    <section id="skills"><div class="container"><div class="section-heading reveal"><div><span class="section-kicker"><span class="pulse-dot"></span> Capability Matrix<span class="cn">能力矩阵</span></span><h2>Technical Skills<span class="cn">技术能力</span></h2></div><p>Research, modeling, data analysis, environmental tools, AI-assisted engineering, and technical communication capabilities.<span class="cn-p">涵盖研究、建模、数据分析、环境工具、AI 辅助工程与技术沟通能力。</span></p></div><div class="skills-grid">
+      <article class="skill-card reveal magnetic"><h3>AI-Assisted Engineering<span class="cn">AI 辅助工程开发</span></h3><ul><li>AI coding models for rapid full-stack development<span class="cn">使用 AI 编码模型进行快速全栈开发</span></li><li>Mobile apps, desktop software, and websites<span class="cn">移动应用、桌面软件和网站开发</span></li><li>AI-driven UI/UX design and local AI vision integration<span class="cn">AI 驱动的 UI/UX 设计与本地视觉模型集成</span></li></ul></article>
+      <article class="skill-card reveal magnetic"><h3>Modeling & Analysis<span class="cn">建模与数据分析</span></h3><ul><li>Python for analytical scripting and data cleaning<span class="cn">使用 Python 进行分析脚本与数据清洗</span></li><li>SPSS and advanced Excel<span class="cn">SPSS 与高级 Excel</span></li><li>Lifecycle Assessment and Entropy Weight Method<span class="cn">生命周期评估与熵权法</span></li></ul></article>
+      <article class="skill-card reveal magnetic"><h3>Environmental Tools<span class="cn">环境工具</span></h3><ul><li>ArcGIS spatial visualization<span class="cn">ArcGIS 空间可视化</span></li><li>Air pollution dispersion modeling<span class="cn">大气污染扩散建模</span></li><li>Environmental sampling and hydrogeology analysis<span class="cn">环境采样与水文地质分析</span></li></ul></article>
+      <article class="skill-card reveal magnetic"><h3>Research Operations<span class="cn">研究执行能力</span></h3><ul><li>Patent writing<span class="cn">专利写作</span></li><li>Technical report compilation<span class="cn">技术报告编制</span></li><li>Feasibility analysis and public speaking<span class="cn">可行性分析与公共表达</span></li></ul></article>
+    </div></div></section>
+
+    <section id="honors"><div class="container"><div class="section-heading reveal"><div><span class="section-kicker"><span class="pulse-dot"></span> Recognition Layer<span class="cn">荣誉层</span></span><h2>Honors & Activities<span class="cn">荣誉与活动</span></h2></div><p>Awards, academic activities, leadership experience, debate, hosting, and community service.<span class="cn-p">包括竞赛获奖、学术活动、领导经历、辩论主持与社区服务。</span></p></div><div class="award-grid">
+      <article class="award-card reveal magnetic"><h3>Academic & Competition Awards<span class="cn">学术与竞赛奖项</span></h3><ul><li>Third Prize, 16th “Challenge Cup” Liaoning Province College Students Extracurricular Academic and Scientific Works Competition · Dec 2023<span class="cn">第十六届“挑战杯”辽宁省大学生课外学术科技作品竞赛三等奖 · 2023 年 12 月</span></li><li>Excellence Award, “White Horse Cup” Debate Competition, Shenyang Jianzhu University · Dec 2021<span class="cn">沈阳建筑大学“白马杯”辩论赛优秀奖 · 2021 年 12 月</span></li><li>Protest Youth Volunteer Certificate & Typical Representative of Anti-epidemic, Shenyang Jianzhu University · Sep 2021<span class="cn">沈阳建筑大学抗疫青年志愿者证书与抗疫典型代表 · 2021 年 9 月</span></li></ul></article>
+      <article class="award-card reveal magnetic"><h3>Leadership & Academic Activity<span class="cn">领导力与学术活动</span></h3><ul><li>Vice President of the Host Club and Captain of the Debate Team.<span class="cn">曾任主持社副社长与辩论队队长。</span></li><li>Active participant in community service and pandemic relief volunteering.<span class="cn">积极参与社区服务和疫情志愿工作。</span></li></ul><div class="conference-chip"><div class="chip-icon">SEA</div><div><strong>SEA Youth Sustainability Summit 2024<span class="cn">2024 东南亚青年可持续发展峰会</span></strong><p>Co-organized by WWF-Malaysia & SEAmply Sustainable · Kuala Lumpur, Malaysia · Aug 2024<span class="cn-p">由 WWF-Malaysia 与 SEAmply Sustainable 联合主办 · 马来西亚吉隆坡 · 2024 年 8 月</span></p></div></div></article>
+    </div></div></section>
+
+    <section id="contact"><div class="container"><div class="contact-panel reveal"><div><span class="section-kicker"><span class="pulse-dot"></span> Open Channel<span class="cn">开放联系通道</span></span><h2>Let’s Connect<span class="cn">欢迎联系</span></h2><p>I am open to academic collaboration, sustainability research discussions, and applied projects related to AI carbon accounting, lifecycle assessment, environmental modeling, green computing policy, and sustainability software.<span class="cn-p">欢迎围绕人工智能碳核算、生命周期评估、环境建模、绿色计算政策和可持续发展软件开展学术合作、研究讨论与应用项目交流。</span></p></div><a class="btn btn-primary" href="mailto:lhz1076277065@gmail.com">lhz1076277065@gmail.com<span class="cn">发送邮件</span></a></div></div></section>
+  </main>
+
+  <footer><div class="container">© <span id="year"></span> Hongzhi Lu / 卢鸿志 · Built as a static GitHub Pages site · No external framework required<span class="cn">作为 GitHub Pages 静态网站构建 · 无需外部框架</span></div></footer>
+  <script>
+    document.getElementById("year").textContent=new Date().getFullYear();
+    const canvas=document.getElementById("network"),ctx=canvas.getContext("2d");let particles=[];const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function resizeCanvas(){canvas.width=innerWidth*devicePixelRatio;canvas.height=innerHeight*devicePixelRatio;canvas.style.width=innerWidth+"px";canvas.style.height=innerHeight+"px";ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+    function createParticles(){const n=Math.min(95,Math.max(42,Math.floor(innerWidth/16)));particles=Array.from({length:n},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.55,vy:(Math.random()-.5)*.55,r:Math.random()*1.8+.7}))}
+    function drawNetwork(){ctx.clearRect(0,0,innerWidth,innerHeight);for(const p of particles){if(!reduce){p.x+=p.vx;p.y+=p.vy}if(p.x<0||p.x>innerWidth)p.vx*=-1;if(p.y<0||p.y>innerHeight)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle="rgba(37,244,255,.72)";ctx.fill()}for(let i=0;i<particles.length;i++)for(let j=i+1;j<particles.length;j++){const a=particles[i],b=particles[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<145){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(37,244,255,${.16*(1-d/145)})`;ctx.lineWidth=1;ctx.stroke()}}if(!reduce)requestAnimationFrame(drawNetwork)}
+    resizeCanvas();createParticles();drawNetwork();addEventListener("resize",()=>{resizeCanvas();createParticles()});
+    const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");ro.unobserve(e.target)}})},{threshold:.14});document.querySelectorAll(".reveal").forEach(e=>ro.observe(e));
+    document.querySelectorAll(".magnetic").forEach(card=>{card.addEventListener("mousemove",e=>{if(reduce||innerWidth<900)return;const r=card.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;card.style.transform=`perspective(900px) rotateX(${((y/r.height)-.5)*-5}deg) rotateY(${((x/r.width)-.5)*5}deg) translateY(-3px)`});card.addEventListener("mouseleave",()=>{card.style.transform=""})});
+  </script>
+</body>
+</html>

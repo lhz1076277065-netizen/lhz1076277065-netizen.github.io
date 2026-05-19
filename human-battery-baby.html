@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Human Battery Baby · 人体电池宝宝</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
+        
+        body {
+            font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
+            background: #fdfbfb;
+            color: #333;
+            overflow-x: hidden;
+            touch-action: manipulation;
+            margin: 0; padding: 0;
+        }
+
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
+        .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .view-section {
+            display: none; 
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: #fdfbfb;
+            overflow-y: auto; overflow-x: hidden;
+            animation: fadeIn 0.3s ease-out;
+            min-height: 100vh;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ================= UI升级：超大温馨小窝与雷电萌兽 ================= */
+        .home-environment {
+            position: relative;
+            width: 100%; height: 420px;
+            background: linear-gradient(180deg, #ffe4e6 0%, #fff1f2 60%, #fed7aa 100%);
+            border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            overflow: hidden;
+            display: flex; align-items: flex-end; justify-content: center;
+            padding-bottom: 30px;
+        }
+
+        /* 放大版狗窝 */
+        .pet-bed {
+            position: absolute; bottom: 20px;
+            width: 300px; height: 100px;
+            background: #fbcfe8;
+            border-radius: 50%;
+            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.1), 0 10px 15px rgba(0,0,0,0.05);
+            border: 4px solid #f9a8d4;
+        }
+        .pet-bed::after {
+            content: ''; position: absolute; top: -40px; left: 10%; width: 80%; height: 80px;
+            background: rgba(249, 168, 212, 0.4); border-radius: 50% 50% 0 0; z-index: 1;
+        }
+
+        /* 深度睡眠按钮 */
+        .sleep-btn {
+            position: absolute; top: 80px; right: 20px; 
+            background: rgba(255,255,255,0.85); border: none; border-radius: 20px; 
+            padding: 8px 14px; display: flex; align-items: center; gap: 6px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); color: #4b5563; font-weight: bold; 
+            font-size: 0.85rem; z-index: 50; backdrop-filter: blur(5px);
+            transition: transform 0.1s;
+        }
+        .sleep-btn:active { transform: scale(0.95); }
+
+        /* 放大版萌兽主体 (Pikabat) */
+        .pikabat {
+            position: relative; width: 210px; height: 240px;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        /* 放大身体 */
+        .p-body {
+            position: absolute; bottom: 0; left: 22.5px; width: 165px; height: 180px;
+            background: #facc15; border-radius: 75px 75px 60px 60px;
+            box-shadow: inset -15px -15px 30px rgba(217,119,6,0.2);
+            z-index: 2;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* 放大脸颊 */
+        .cheek { position: absolute; top: 70px; width: 30px; height: 30px; background: #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px; opacity: 0.8; }
+        .cheek.left { left: 8px; } .cheek.left::after { content: '+'; }
+        .cheek.right { right: 8px; } .cheek.right::after { content: '-'; }
+
+        /* 放大耳朵 */
+        .ear { position: absolute; top: -45px; width: 36px; height: 90px; background: #facc15; border-radius: 50% 50% 0 0; z-index: 1; overflow: hidden; transform-origin: bottom center; }
+        .ear::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 30px; background: #333; }
+        .ear.left { left: 15px; transform: rotate(-25deg); }
+        .ear.right { right: 15px; transform: rotate(25deg); }
+
+        /* 放大尾巴 */
+        .tail { position: absolute; right: -30px; bottom: 45px; width: 60px; height: 75px; background: #facc15; clip-path: polygon(100% 0, 50% 40%, 80% 40%, 0 100%, 30% 60%, 0 60%); z-index: 1; transform-origin: bottom left; }
+
+        /* 放大眼睛 */
+        .eye-group { position: absolute; top: 45px; width: 100%; display: flex; justify-content: center; gap: 45px; }
+        .eye { width: 24px; height: 24px; background: #333; border-radius: 50%; position: relative; transition: all 0.2s; }
+        .eye::after { content: ''; position: absolute; top: 4px; right: 4px; width: 10px; height: 10px; background: white; border-radius: 50%; }
+
+        /* 放大嘴巴 */
+        .mouth { position: absolute; top: 85px; width: 24px; height: 12px; border-bottom: 4px solid #333; border-radius: 0 0 15px 15px; transition: all 0.2s; }
+
+        /* 放大版：手机充电UI肚子电池槽 */
+        .belly-battery {
+            position: absolute; bottom: 25px; width: 130px; height: 50px;
+            background: rgba(255,255,255,0.95); border: 4px solid #374151; border-radius: 12px;
+            overflow: hidden; padding: 2px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .belly-battery::after { 
+            content: ''; position: absolute; right: -8px; top: 12px; width: 8px; height: 20px;
+            background: #374151; border-radius: 0 4px 4px 0;
+        }
+        .belly-level {
+            height: 100%; background: #22c55e; border-radius: 6px;
+            width: 100%; transition: width 1s ease-in-out, background 0.5s;
+            position: relative; display: flex; align-items: center; justify-content: center;
+        }
+        .belly-text {
+            position: absolute; width: 100%; text-align: center;
+            font-size: 1.2rem; font-weight: bold; color: #374151; font-family: monospace;
+            text-shadow: 0 0 5px rgba(255,255,255,0.8); z-index: 5;
+        }
+
+        /* 汗滴 */
+        .sweat { position: absolute; top: 30px; right: 30px; width: 15px; height: 22px; background: #60a5fa; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; display: none; }
+
+        /* --- 大尺寸表情系统 (data-state) --- */
+        [data-state="full"] .eye { height: 30px; border-radius: 50%; box-shadow: 0 0 15px #facc15; } 
+        [data-state="full"] .mouth { width: 30px; height: 18px; border-bottom: 6px solid #333; }
+        
+        [data-state="happy"] .eye { height: 24px; border-radius: 50%; } 
+        [data-state="happy"] .mouth { border-bottom: 4px solid #333; }
+
+        [data-state="normal"] .eye { height: 24px; border-radius: 50%; } 
+        [data-state="normal"] .mouth { width: 18px; height: 4px; border-bottom: none; border-top: 4px solid #333; border-radius: 0; }
+
+        [data-state="tired"] .eye { height: 8px; border-radius: 10px; margin-top: 8px; } 
+        [data-state="tired"] .mouth { border-bottom: none; border-top: 4px solid #333; border-radius: 10px 10px 0 0; }
+
+        [data-state="sad"] .eye { height: 6px; border-radius: 10px; margin-top: 9px; } 
+        [data-state="sad"] .mouth { width: 18px; height: 12px; border-bottom: none; border-top: 4px solid #333; border-radius: 10px 10px 0 0; }
+        [data-state="sad"] .sweat { display: block; animation: float 2s infinite; }
+
+        [data-state="dead"] .eye { background: transparent; border-radius: 0; height: 24px; } 
+        [data-state="dead"] .eye::before, [data-state="dead"] .eye::after { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 4px; background: #333; }
+        [data-state="dead"] .eye::before { transform: rotate(45deg); }
+        [data-state="dead"] .eye::after { transform: rotate(-45deg); }
+        [data-state="dead"] .mouth { width: 15px; height: 15px; border: 4px solid #333; border-radius: 50%; top: 80px; background: #fca5a5; }
+
+        /* --- 动作特效 --- */
+        .anim-charging { animation: bounce 0.5s infinite alternate; filter: drop-shadow(0 0 25px #facc15); }
+        .anim-charging .p-body { background: #fef08a; }
+        .charge-lightning { position: absolute; top: -60px; font-size: 60px; color: #fbbf24; opacity: 0; z-index: 20; }
+        .anim-charging .charge-lightning { animation: strike 1s infinite; }
+
+        .anim-discharging { animation: shake 0.2s infinite; filter: drop-shadow(0 0 20px #ef4444); }
+        .anim-discharging .tail { animation: tailSpark 0.1s infinite; background: #ef4444; }
+        
+        .anim-0 .eye { transform: scaleY(0.1); } 
+        .anim-1 { transform: translateY(-30px); } 
+        .anim-2 .ear.left { transform: rotate(-40deg); } .anim-2 .ear.right { transform: rotate(40deg); } 
+        .anim-3 .tail { transform: rotate(30deg); } 
+        .anim-4 .eye-group { transform: translateX(8px); } 
+        .anim-5 .eye-group { transform: translateX(-8px); } 
+        .anim-6 .mouth { width: 24px; height: 24px; border: 4px solid #333; border-radius: 50%; } 
+        .anim-7 .p-body { transform: scaleY(0.95); } 
+        .anim-8 { animation: shake 0.1s infinite; } 
+        .anim-9 .p-body { transform: scaleY(1.05); } 
+
+        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-15px); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+        @keyframes strike { 0% { opacity: 0; transform: translateY(-20px); } 50% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(20px); } }
+        @keyframes tailSpark { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+        .toast {
+            position: fixed; top: 40px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.85); color: white; padding: 14px 28px;
+            border-radius: 30px; z-index: 9999; display: none; text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3); font-size: 15px; font-weight: bold;
+        }
+
+        .bottom-nav { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); border-top: 1px solid #f0f0f0; }
+        
+        /* 模态框通用 */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 8000;
+            display: none; align-items: center; justify-content: center; backdrop-filter: blur(3px);
+        }
+        .modal-content {
+            background: white; width: 85%; max-width: 320px; border-radius: 24px; padding: 24px;
+            text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* 食物图标网格 */
+        .food-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .food-item {
+            background: #f3f4f6; border-radius: 12px; padding: 12px 4px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.1s;
+        }
+        .food-item:active { transform: scale(0.95); }
+    </style>
+</head>
+<body>
+
+    <div id="toast" class="toast"></div>
+
+    <!-- 应用说明书模态框 -->
+    <div id="appInfoModal" class="modal-overlay">
+        <div class="modal-content">
+            <i class="fas fa-book-open text-4xl text-blue-500 mb-4"></i>
+            <h3 class="text-xl font-bold mb-2">人体电池使用手册</h3>
+            <div class="text-gray-600 text-sm text-left leading-relaxed mb-6 space-y-2 max-h-[50vh] overflow-y-auto no-scrollbar">
+                <p><b>设计意义：</b>将您的身体机能抽象为一块手机电池。通过将总容量设定为 TDEE，让枯燥的健康管理变得直观有趣。</p>
+                <p><b>🔋 总电量 (TDEE)：</b>每日总能量消耗。这是您维持当前体重每天所需摄入的总热量。</p>
+                <p><b>📉 待机功耗：</b>即“基础代谢(BMR)”。只要您活着，身体每分每秒都在自动消耗电量。</p>
+                <p><b>🍔 吃饭充电：</b>摄入食物等于插上充电器，补充能量池。</p>
+                <p><b>🏃 运动耗电：</b>相当于开启高耗电应用，瞬间释放大量电能。</p>
+                <p><b>🌙 深度睡眠：</b>可一键回满电量，或设置定时自动睡眠，模拟每天重新充满电开始新的一天。</p>
+            </div>
+            <button onclick="closeAppInfoModal()" class="w-full bg-blue-500 text-white font-bold py-3 rounded-xl shadow-lg">我明白了</button>
+        </div>
+    </div>
+
+    <!-- 深度睡眠设置弹窗 -->
+    <div id="sleepModal" class="modal-overlay">
+        <div class="modal-content">
+            <i class="fas fa-moon text-4xl text-blue-500 mb-4"></i>
+            <h3 class="text-xl font-bold mb-4 text-gray-800">深度睡眠</h3>
+            
+            <button onclick="fullCharge()" style="width: 100%; background: #3b82f6; color: white; padding: 14px; border-radius: 12px; font-weight: bold; border: none; margin-bottom: 24px; box-shadow: 0 4px 10px rgba(59,130,246,0.3);">
+                <i class="fas fa-bed mr-2"></i> 一键立刻深度睡眠
+            </button>
+
+            <div style="border-top: 1px dashed #d1d5db; margin-bottom: 24px;"></div>
+
+            <h4 class="font-bold text-gray-700 mb-2">自动睡眠设置</h4>
+            <p class="text-xs text-gray-500 mb-4">设定时间，每天自动为您充满电量</p>
+            <input type="time" id="autoSleepTimeInput" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e5e7eb; text-align: center; font-size: 1.2rem; outline: none; margin-bottom: 16px;">
+            
+            <div style="display: flex; gap: 12px;">
+                <button onclick="document.getElementById('sleepModal').style.display='none'" style="flex: 1; background: #f3f4f6; color: #4b5563; padding: 14px; border-radius: 12px; font-weight: bold; border: none;">取消</button>
+                <button onclick="saveAutoSleep()" style="flex: 1; background: #22c55e; color: white; padding: 14px; border-radius: 12px; font-weight: bold; border: none; box-shadow: 0 4px 10px rgba(34,197,94,0.3);">保存时间</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 支付弹窗 -->
+    <div id="paymentModal" class="modal-overlay">
+        <div class="modal-content">
+            <i class="fas fa-crown text-5xl text-yellow-400 mb-4"></i>
+            <h3 class="text-xl font-bold mb-2">解锁高级会员功能</h3>
+            <p class="text-gray-500 text-sm mb-4" id="paymentReasonText">升级后即可永久使用所有隐藏功能</p>
+            <div class="bg-gray-50 rounded-xl p-4 text-left space-y-3 mb-6">
+                <div>
+                    <div class="text-xs text-gray-400 font-bold mb-1">方式一: 支付宝 (Alipay) 转账</div>
+                    <div class="font-bold text-blue-500 select-all">1076277065@qq.com</div>
+                </div>
+                <div class="border-t border-gray-200 pt-2">
+                    <div class="text-xs text-gray-400 font-bold mb-1">方式二: Touch 'n Go / DuitNow</div>
+                    <div class="font-bold text-blue-800 select-all">160874477001</div>
+                </div>
+                <div class="text-xs text-red-400 mt-2 text-center font-bold">付款时请备注您的注册昵称</div>
+            </div>
+            <button onclick="document.getElementById('paymentModal').style.display='none'" class="w-full bg-gray-800 text-white font-bold py-3 rounded-xl">我已了解</button>
+        </div>
+    </div>
+
+    <!-- 1. 设置页面 (新增日常活动水平选择) -->
+    <div id="view-setup" class="view-section pt-safe pb-safe" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);">
+        <div style="padding: 24px; display: flex; flex-direction: column; justify-content: center; min-height: 100%;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="font-size: 5rem; line-height:1; display: inline-block; animation: bounce 2s infinite;">🥚</div>
+                <h1 style="font-size: 1.8rem; font-weight: bold; color: #1f2937; margin-top: 10px;">领养电池宝宝</h1>
+                <p style="color: #6b7280; margin-top: 8px;">填写数据，计算您的 TDEE 能量池</p>
+            </div>
+            <div style="background: white; padding: 24px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 16px;">
+                <input type="text" id="setupName" placeholder="主人称呼 (如：Master)" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e5e7eb; outline: none;">
+                <select id="setupGender" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e5e7eb; outline: none; background: white;">
+                    <option value="male">男生 ♂</option>
+                    <option value="female">女生 ♀</option>
+                </select>
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="setupAge" placeholder="年龄 (岁)" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e5e7eb; outline: none;">
+                    <input type="number" id="setupHeight" placeholder="身高 (cm)" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e5e7eb; outline: none;">
+                </div>
+                <input type="number" id="setupWeight" placeholder="体重 (kg)" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e5e7eb; outline: none;">
+                
+                <div style="margin-top: -4px;">
+                    <label style="font-size: 0.8rem; color: #6b7280; margin-bottom: 4px; display: block;">日常活动水平</label>
+                    <select id="setupActivity" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e5e7eb; outline: none; background: white; font-size: 0.9rem;">
+                        <option value="1.2">久坐不动 (办公室工作，几乎不运动)</option>
+                        <option value="1.375">轻度活动 (每周轻松运动 1-3 天)</option>
+                        <option value="1.55" selected>中度活动 (每周中等强度运动 3-5 天)</option>
+                        <option value="1.725">高度活动 (每周剧烈运动 6-7 天)</option>
+                        <option value="1.9">极度活动 (重体力劳动者或极高强度训练)</option>
+                    </select>
+                </div>
+
+                <button onclick="saveUserAndStart()" style="width: 100%; background: #facc15; color: #713f12; font-weight: bold; padding: 14px; border-radius: 12px; border: none; box-shadow: 0 4px 10px rgba(250,204,21,0.4); margin-top: 10px; font-size:1.1rem;">开始孵化</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 主页面 -->
+    <div id="view-home" class="view-section pt-safe" style="background: #f8fafc;">
+        <div style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; position: absolute; width: 100%; z-index: 50;">
+            <div style="font-weight: bold; font-size: 1.1rem; color: #1f2937; background: rgba(255,255,255,0.7); padding: 4px 12px; border-radius: 20px; backdrop-filter: blur(5px);" id="homeUserName">Hi, Master</div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="document.getElementById('appInfoModal').style.display='flex'" style="color: #4b5563; font-size: 1.2rem; background: white; width: 36px; height: 36px; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: none;"><i class="fas fa-question"></i></button>
+                <button onclick="navTo('settings')" style="color: #4b5563; font-size: 1.2rem; background: white; width: 36px; height: 36px; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: none;"><i class="fas fa-cog"></i></button>
+            </div>
+        </div>
+        
+        <!-- 超大温馨小窝 & 电池宝宝 -->
+        <div class="home-environment" id="pikaEnvironment">
+            
+            <!-- 睡眠设置与恢复按钮 -->
+            <button onclick="openSleepModal()" class="sleep-btn">
+                <i class="fas fa-moon text-blue-500 text-lg"></i> 深度睡眠
+            </button>
+
+            <div class="pet-bed"></div>
+            
+            <div class="pikabat" id="pikabat" data-state="happy">
+                <i class="fas fa-bolt charge-lightning"></i>
+                <div class="ear left"></div>
+                <div class="ear right"></div>
+                <div class="p-body">
+                    <div class="sweat"></div>
+                    <div class="eye-group">
+                        <div class="eye"></div><div class="eye"></div>
+                    </div>
+                    <div class="cheek left"></div>
+                    <div class="cheek right"></div>
+                    <div class="mouth"></div>
+                    <!-- 大号手机电池槽UI -->
+                    <div class="belly-battery">
+                        <div class="belly-text" id="batteryPercent">100.00%</div>
+                        <div class="belly-level" id="bellyLevel"></div>
+                    </div>
+                </div>
+                <div class="tail"></div>
+            </div>
+        </div>
+        
+        <div style="padding: 20px; padding-bottom: 100px;">
+            <!-- 总能量详情显示 (TDEE标准) -->
+            <div style="background: white; border-radius: 16px; padding: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin-bottom: 16px; text-align: center;">
+                <div style="font-size: 0.8rem; color: #9ca3af; margin-bottom: 4px;">当前剩余电量 (每日总耗能 TDEE)</div>
+                <div style="font-size: 1.4rem; font-weight: bold; color: #1f2937;" id="totalEnergyText">0 kcal</div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 8px; background: #f3f4f6; padding: 8px; border-radius: 8px;" id="iphoneCompareText">
+                    约合 0 Wh，相当于 0 个 iPhone 17 Pro 电池
+                </div>
+            </div>
+
+            <!-- 功耗统计 -->
+            <div style="background: white; border-radius: 16px; padding: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <!-- 待机功耗 -->
+                    <div style="font-size: 0.75rem; color: #9ca3af; margin-bottom: 4px;">待机功耗 (基础代谢)</div>
+                    <div style="font-weight: bold; font-size: 1.1rem; color: #f87171;" id="bmrDrainText">0 kcal / 时</div>
+                    <div style="font-size: 0.75rem; color: #6b7280; margin-top: 4px;" id="applianceCompareText">功耗相当于 0W 的灯泡</div>
+                </div>
+                <i class="fas fa-bolt" style="font-size: 2rem; color: #fbbf24; opacity: 0.3;"></i>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <button onclick="navTo('healthStandard')" style="background: #dbeafe; padding: 16px; border-radius: 16px; border: none; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <i class="fas fa-heartbeat" style="font-size: 1.5rem; color: #3b82f6; margin-bottom: 8px;"></i>
+                    <div style="font-weight: bold; color: #1e40af;">健康标准</div>
+                </button>
+                <button onclick="navTo('healthManage')" style="background: #dcfce7; padding: 16px; border-radius: 16px; border: none; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <i class="fas fa-leaf" style="font-size: 1.5rem; color: #22c55e; margin-bottom: 8px;"></i>
+                    <div style="font-weight: bold; color: #166534;">健康管家</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- 底部导航栏 -->
+        <div class="bottom-nav pb-safe" style="position: fixed; bottom: 0; left: 0; width: 100%; display: flex; justify-content: space-around; padding-top: 10px; z-index: 100;">
+            <button onclick="navTo('camera')" style="display: flex; flex-direction: column; align-items: center; background: none; border: none; color: #9ca3af; width:60px;">
+                <i class="fas fa-utensils" style="font-size: 1.4rem; margin-bottom: 4px;"></i><span style="font-size: 0.7rem; font-weight:bold;">吃饭充电</span>
+            </button>
+            <button onclick="navTo('voice')" style="display: flex; flex-direction: column; align-items: center; background: none; border: none; color: #9ca3af; width:60px;">
+                <i class="fas fa-microphone" style="font-size: 1.4rem; margin-bottom: 4px;"></i><span style="font-size: 0.7rem; font-weight:bold;">语音</span>
+            </button>
+            <div style="position: relative; top: -20px;">
+                <button onclick="navTo('home')" style="background: #facc15; color: #713f12; width: 56px; height: 56px; border-radius: 50%; border: none; box-shadow: 0 4px 10px rgba(250,204,21,0.5); display: flex; align-items: center; justify-content: center; border: 3px solid white;">
+                    <i class="fas fa-home" style="font-size: 1.5rem;"></i>
+                </button>
+            </div>
+            <button onclick="navTo('activity')" style="display: flex; flex-direction: column; align-items: center; background: none; border: none; color: #9ca3af; width:60px;">
+                <i class="fas fa-running" style="font-size: 1.4rem; margin-bottom: 4px;"></i><span style="font-size: 0.7rem; font-weight:bold;">运动耗电</span>
+            </button>
+            <button onclick="navTo('settings')" style="display: flex; flex-direction: column; align-items: center; background: none; border: none; color: #9ca3af; width:60px;">
+                <i class="fas fa-user" style="font-size: 1.4rem; margin-bottom: 4px;"></i><span style="font-size: 0.7rem; font-weight:bold;">我的</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. 健康标准 -->
+    <div id="view-healthStandard" class="view-section pt-safe" style="background: white;">
+        <div style="padding: 16px; border-bottom: 1px solid #f3f4f6; display: flex; align-items: center;">
+            <button onclick="navTo('home')" style="font-size: 1.2rem; background: none; border: none; padding: 8px;"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="font-size: 1.2rem; font-weight: bold; margin-left: 16px;">健康电池标准</h2>
+        </div>
+        <div style="padding: 24px;">
+            <div style="background: #eff6ff; border-radius: 24px; padding: 24px; text-align: center; border: 2px solid #dbeafe;">
+                <i class="fas fa-medal" style="font-size: 3rem; color: #60a5fa; margin-bottom: 16px; display: block;"></i>
+                <h3 style="color: #6b7280; margin-bottom: 8px; font-size: 0.9rem;">根据身高，推荐健康 TDEE</h3>
+                <div style="font-size: 2rem; font-weight: bold; color: #1e40af; margin-bottom: 16px;" id="idealWeightText">0 kg</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px;">
+                    <div style="background: white; padding: 12px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <div style="font-size: 0.75rem; color: #9ca3af;">推荐每日总耗能</div>
+                        <div style="font-weight: bold; color: #1f2937; margin-top: 4px;" id="idealEnergyText">0 kcal</div>
+                    </div>
+                    <div style="background: white; padding: 12px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <div style="font-size: 0.75rem; color: #9ca3af;">健康功耗</div>
+                        <div style="font-weight: bold; color: #1f2937; margin-top: 4px;" id="idealBmrText">0 kcal/天</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. 健康管家 -->
+    <div id="view-healthManage" class="view-section pt-safe" style="background: white;">
+        <div style="padding: 16px; border-bottom: 1px solid #f3f4f6; display: flex; align-items: center;">
+            <button onclick="navTo('home')" style="font-size: 1.2rem; background: none; border: none; padding: 8px;"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="font-size: 1.2rem; font-weight: bold; margin-left: 16px;">健康管家建议</h2>
+        </div>
+        <div style="padding: 24px;">
+            <div style="background: #f0fdf4; border-radius: 24px; padding: 24px; border: 2px solid #dcfce7;">
+                <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                    <div style="width: 48px; height: 48px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #22c55e; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-right: 16px;">
+                        <i class="fas fa-stethoscope" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <h3 style="font-size: 1.1rem; font-weight: bold; color: #166534;">电池体检报告</h3>
+                </div>
+                <div id="healthAdviceText" style="color: #374151; line-height: 1.6; font-size: 0.95rem;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 吃饭充电页面 -->
+    <div id="view-camera" class="view-section pt-safe" style="background: #f8fafc;">
+        <div style="padding: 16px; background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10;">
+            <button onclick="navTo('home')" style="font-size: 1.2rem; background: none; border: none; padding: 8px;"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="font-size: 1.2rem; font-weight: bold;">吃饭充电</h2>
+            <div style="width: 32px;"></div>
+        </div>
+        
+        <div style="padding: 16px; padding-bottom: 120px;">
+            <div class="food-grid" id="foodGridContainer">
+                <!-- 由 JS 动态生成食物列表 -->
+            </div>
+
+            <div style="margin-top: 24px; background: white; padding: 16px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                <h3 style="font-weight: bold; margin-bottom: 12px; color: #4b5563;">其他食物未在列表？</h3>
+                <button onclick="openCustomFoodModal()" style="width: 100%; padding: 12px; background: #f3f4f6; color: #374151; border-radius: 12px; border: 1px dashed #9ca3af; font-weight: bold;">
+                    <i class="fas fa-keyboard mr-2"></i> 自定义输入食物
+                </button>
+            </div>
+
+            <div style="margin-top: 24px; background: #111827; border-radius: 16px; padding: 20px; text-align: center;">
+                <p style="color: #9ca3af; font-size: 0.8rem; margin-bottom: 12px;">高级版专享：AI相机自动计算</p>
+                <input type="file" id="foodFileInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                <button onclick="document.getElementById('foodFileInput').click()" style="width: 100%; background: #facc15; color: black; padding: 14px; border-radius: 12px; font-weight: bold; border: none; box-shadow: 0 4px 15px rgba(250,204,21,0.2);">
+                    <i class="fas fa-camera mr-2"></i> AI 拍照识别 (Pro)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 食物克数输入弹窗 -->
+    <div id="foodInputModal" class="modal-overlay">
+        <div class="modal-content">
+            <i id="foodModalIcon" class="fas fa-utensils text-4xl mb-4" style="color: #f59e0b;"></i>
+            <h3 id="foodModalTitle" class="text-xl font-bold mb-2 text-gray-800">食物名称</h3>
+            <p id="foodModalKcal" class="text-sm text-gray-500 mb-6">每100克含有 0 kcal</p>
+            
+            <input type="number" id="foodGramsInput" placeholder="请输入重量 (克)" style="width: 100%; padding: 16px; border-radius: 12px; border: 1px solid #e5e7eb; text-align: center; font-size: 1.2rem; font-weight: bold; outline: none; margin-bottom: 20px;">
+            
+            <div style="display: flex; gap: 12px;">
+                <button onclick="closeFoodModals()" style="flex: 1; background: #f3f4f6; color: #4b5563; padding: 14px; border-radius: 12px; font-weight: bold; border: none;">取消</button>
+                <button onclick="consumeFoodEnergy()" style="flex: 1; background: #22c55e; color: white; padding: 14px; border-radius: 12px; font-weight: bold; border: none; box-shadow: 0 4px 10px rgba(34,197,94,0.3);">吸收充电</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自定义食物输入弹窗 -->
+    <div id="customFoodModal" class="modal-overlay">
+        <div class="modal-content">
+            <i class="fas fa-keyboard text-4xl text-blue-500 mb-4"></i>
+            <h3 class="text-xl font-bold mb-4 text-gray-800">自定义食物</h3>
+            
+            <input type="text" id="customFoodName" placeholder="食物名称 (选填)" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e5e7eb; text-align: center; font-size: 1rem; outline: none; margin-bottom: 12px;">
+            <input type="number" id="customFoodGrams" placeholder="约含热量 (kcal)" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e5e7eb; text-align: center; font-size: 1rem; outline: none; margin-bottom: 20px;">
+            
+            <div style="display: flex; gap: 12px;">
+                <button onclick="closeFoodModals()" style="flex: 1; background: #f3f4f6; color: #4b5563; padding: 14px; border-radius: 12px; font-weight: bold; border: none;">取消</button>
+                <button onclick="consumeCustomFood()" style="flex: 1; background: #3b82f6; color: white; padding: 14px; border-radius: 12px; font-weight: bold; border: none; box-shadow: 0 4px 10px rgba(59,130,246,0.3);">充电</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. 语音记录页面 -->
+    <div id="view-voice" class="view-section pt-safe pb-safe" style="background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%); color: white;">
+        <div style="padding: 16px; display: flex; align-items: center; justify-content: space-between;">
+            <button onclick="navTo('home')" style="font-size: 1.2rem; background: none; border: none; color: white; padding: 8px;"><i class="fas fa-times"></i></button>
+            <h2 style="font-size: 1.1rem; font-weight: bold;">智能语音控制</h2>
+            <div style="width: 24px;"></div>
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center;">
+            <button onclick="document.getElementById('paymentModal').style.display='flex'" style="width: 130px; height: 130px; border-radius: 50%; background: white; color: #c026d3; font-size: 3.5rem; border: none; box-shadow: 0 0 50px rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; margin-bottom: 30px;">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <div style="font-size: 1.2rem; font-weight: bold; min-height: 30px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">点击说话记录充放电</div>
+        </div>
+    </div>
+
+    <!-- 7. 运动耗电 -->
+    <div id="view-activity" class="view-section pt-safe" style="background: #f8fafc;">
+        <div style="padding: 16px; background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; align-items: center; position: sticky; top: 0; z-index: 10;">
+            <button onclick="navTo('home')" style="font-size: 1.2rem; background: none; border: none; padding: 8px;"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="font-size: 1.2rem; font-weight: bold; margin-left: 16px;">运动耗电</h2>
+        </div>
+        <div id="activityListContainer" style="padding: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding-bottom: 100px;"></div>
+    </div>
+
+    <!-- 8. 运动操作弹窗 -->
+    <div id="activityModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 50; display: none; flex-direction: column; justify-content: flex-end;">
+        <div style="background: white; width: 100%; border-radius: 24px 24px 0 0; padding: 24px; padding-bottom: env(safe-area-inset-bottom, 24px);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <div style="display: flex; align-items: center;">
+                    <i id="modalIcon" class="fas fa-running" style="font-size: 1.8rem; margin-right: 12px;"></i>
+                    <h3 id="modalTitle" style="font-size: 1.5rem; font-weight: bold;">运动</h3>
+                </div>
+                <button onclick="closeActivityModal()" style="color: #9ca3af; font-size: 1.5rem; background: none; border: none;"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div id="activityManualView" style="padding: 16px 0;">
+                <input type="text" id="manualActName" placeholder="输入运动名称" style="display:none; width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e5e7eb; font-size: 1.1rem; text-align: center; outline: none; margin-bottom: 12px;">
+                
+                <label style="display: block; color: #4b5563; margin-bottom: 8px; font-weight: bold;">运动时长 (分钟)</label>
+                <input type="number" id="manualDuration" oninput="calcManualBurn()" placeholder="例如: 30" style="width: 100%; padding: 16px; border-radius: 16px; border: 1px solid #e5e7eb; font-size: 1.5rem; font-weight: bold; text-align: center; outline: none; margin-bottom: 16px;">
+                
+                <div style="text-align: center; color: #6b7280; margin-bottom: 24px;">本次放电: <span id="manualBurn" style="color: #ef4444; font-weight: bold; font-size: 1.2rem;">0</span> kcal</div>
+                <button onclick="consumeEnergyManual()" style="width: 100%; background: #1f2937; color: white; font-weight: bold; padding: 16px; border-radius: 16px; font-size: 1.1rem; border: none;">确认耗电</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. 系统设置页面 -->
+    <div id="view-settings" class="view-section pt-safe" style="background: #f8fafc;">
+        <div style="padding: 16px; background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; align-items: center; position: sticky; top: 0;">
+            <button onclick="navTo('home')" style="font-size: 1.2rem; background: none; border: none; padding: 8px;"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="font-size: 1.2rem; font-weight: bold; margin-left: 16px;">设置与我的</h2>
+        </div>
+        <div style="padding: 16px; display: flex; flex-direction: column; gap: 16px;">
+            <div style="background: white; border-radius: 16px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <h3 style="color: #9ca3af; font-size: 0.875rem; font-weight: bold; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #f3f4f6;">电池列表</h3>
+                <div id="userList" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;"></div>
+                <button onclick="navTo('setup')" style="width: 100%; padding: 12px; background: #fef9c3; color: #a16207; font-weight: bold; border-radius: 12px; border: 1px solid #fef08a; display: flex; justify-content: center; align-items: center;">
+                    <i class="fas fa-plus" style="margin-right: 8px;"></i> 领养新宝宝
+                </button>
+            </div>
+
+            <!-- 限时新品特惠活动 -->
+            <div style="background: linear-gradient(135deg, #1f2937 0%, #000000 100%); border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); color: white; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 15px; right: -30px; background: #ef4444; color: white; font-size: 0.7rem; font-weight: bold; padding: 4px 30px; transform: rotate(45deg);">特惠</div>
+                <h3 style="font-weight: bold; font-size: 1.2rem; margin-bottom: 4px; color: #facc15;"><i class="fas fa-crown mr-2"></i>限时新品特惠活动</h3>
+                <p style="font-size: 0.8rem; color: #9ca3af; margin-bottom: 16px;">升级高级会员 (Pro版)</p>
+                <div style="display: flex; align-items: baseline; margin-bottom: 16px;">
+                    <span style="font-size: 2rem; font-weight: bold; color: #facc15;">59.9</span>
+                    <span style="font-size: 1rem; color: #facc15; margin-left: 4px; margin-right: 12px;">RM</span>
+                    <span style="font-size: 0.8rem; background: rgba(250,204,21,0.2); color: #facc15; padding: 2px 6px; border-radius: 4px;">永久使用</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; text-decoration: line-through; margin-top: -10px; margin-bottom: 16px;">原价：9.9 RM / 月</div>
+
+                <ul style="font-size: 0.85rem; margin-bottom: 16px; color: #d1d5db; list-style: none; padding: 0; line-height: 1.8;">
+                    <li><i class="fas fa-check text-green-400 w-5"></i> 解锁 AI 拍照自动识别卡路里</li>
+                    <li><i class="fas fa-check text-green-400 w-5"></i> 解锁智能语音记录控制</li>
+                    <li><i class="fas fa-check text-green-400 w-5"></i> 解锁宝宝隐藏待机动画皮肤</li>
+                </ul>
+                <button onclick="document.getElementById('paymentModal').style.display='flex'" style="width: 100%; padding: 14px; background: #facc15; color: black; font-weight: bold; font-size: 1.1rem; border-radius: 12px; border: none; box-shadow: 0 4px 15px rgba(250,204,21,0.3);">立即升级</button>
+            </div>
+            
+            <div style="text-align:center; font-size: 0.8rem; color: #9ca3af; margin-top: 10px;">
+                开发者: LU HONGZHI / 卢鸿志<br>Email: lhz1076277065@gmail.com
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let memoryStore = {};
+        function safeSet(key, val) { try { localStorage.setItem(key, val); } catch(e) { memoryStore[key] = val; } }
+        function safeGet(key) { try { return localStorage.getItem(key) || memoryStore[key]; } catch(e) { return memoryStore[key]; } }
+
+        const allViews = ['setup', 'home', 'healthStandard', 'healthManage', 'camera', 'voice', 'activity', 'settings'];
+        
+        function navTo(viewId) {
+            allViews.forEach(v => {
+                const el = document.getElementById('view-' + v);
+                if(el) el.style.display = (v === viewId) ? 'block' : 'none';
+            });
+            
+            if (viewId === 'home') {
+                updateHomeUI();
+                // 首次进入主页自动弹出说明书
+                const user = getCurrentUser();
+                if (user && !user.hasSeenManual) {
+                    document.getElementById('appInfoModal').style.display = 'flex';
+                    user.hasSeenManual = true;
+                    saveState();
+                }
+            }
+            if (viewId === 'settings') renderUserList();
+            if (viewId === 'activity') renderActivityList();
+            if (viewId === 'healthStandard') renderHealthStandard();
+            if (viewId === 'healthManage') renderHealthManage();
+            if (viewId === 'camera') renderFoodList();
+        }
+
+        let appState = { users: [], currentUserIndex: -1, lastUpdateTime: Date.now() };
+        const IPHONE_17_PRO_WH = 17, KCAL_TO_WH = 1.16222; 
+        
+        const ACTIVITIES = [
+            { id: 'run', name: '跑步', icon: 'fa-running', met: 8.0, color: '#3b82f6', bg: '#dbeafe' },
+            { id: 'squat', name: '蹲起', icon: 'fa-dumbbell', met: 5.0, color: '#a855f7', bg: '#f3e8ff' },
+            { id: 'jump', name: '跳绳', icon: 'fa-wave-square', met: 10.0, color: '#ef4444', bg: '#fee2e2' },
+            { id: 'walk', name: '散步', icon: 'fa-walking', met: 3.0, color: '#22c55e', bg: '#dcfce7' },
+            { id: 'surf', name: '冲浪', icon: 'fa-water', met: 3.0, color: '#06b6d4', bg: '#cffafe' },
+            { id: 'swim', name: '游泳', icon: 'fa-swimmer', met: 6.0, color: '#3b82f6', bg: '#dbeafe' },
+            { id: 'yoga', name: '瑜伽', icon: 'fa-yin-yang', met: 2.5, color: '#f472b6', bg: '#fce7f3' },
+            { id: 'basketball', name: '篮球', icon: 'fa-basketball-ball', met: 6.0, color: '#f97316', bg: '#ffedd5' },
+            { id: 'skate', name: '滑板', icon: 'fa-skating', met: 5.0, color: '#14b8a6', bg: '#ccfbf1' },
+            { id: 'badminton', name: '羽毛球', icon: 'fa-volleyball-ball', met: 4.5, color: '#ca8a04', bg: '#fef9c3' },
+            { id: 'study', name: '学习', icon: 'fa-book', met: 1.3, color: '#8b5cf6', bg: '#ede9fe' },
+            { id: 'computer', name: '玩电脑', icon: 'fa-laptop', met: 1.5, color: '#64748b', bg: '#f1f5f9' },
+            { id: 'other', name: '其他运动', icon: 'fa-question', met: 5.0, color: '#6b7280', bg: '#f3f4f6' }
+        ];
+
+        const FOODS = [
+            { id: 'burger', name: '汉堡', icon: 'fa-hamburger', kcal: 295, color: '#f59e0b' },
+            { id: 'noodle_rice', name: '米粉', icon: 'fa-bowl-rice', kcal: 110, color: '#facc15' },
+            { id: 'chicken', name: '鸡肉', icon: 'fa-drumstick-bite', kcal: 167, color: '#fb923c' },
+            { id: 'rice', name: '米饭', icon: 'fa-bowl-rice', kcal: 130, color: '#9ca3af' },
+            { id: 'noodle', name: '面条', icon: 'fa-bowl-food', kcal: 110, color: '#fde047' },
+            { id: 'pasta', name: '意大利面', icon: 'fa-utensils', kcal: 131, color: '#fbbf24' },
+            { id: 'beef', name: '牛肉', icon: 'fa-bacon', kcal: 250, color: '#ef4444' },
+            { id: 'chips', name: '薯片', icon: 'fa-cookie', kcal: 536, color: '#fcd34d' },
+            { id: 'fries', name: '薯条', icon: 'fa-fire', kcal: 312, color: '#fbbf24' }, 
+            { id: 'cola', name: '可乐', icon: 'fa-glass-water', kcal: 43, color: '#1f2937' },
+            { id: 'milktea', name: '奶茶', icon: 'fa-mug-hot', kcal: 90, color: '#a8a29e' },
+            { id: 'veg', name: '蔬菜', icon: 'fa-carrot', kcal: 20, color: '#22c55e' },
+            { id: 'potato', name: '土豆', icon: 'fa-seedling', kcal: 77, color: '#d97706' },
+            { id: 'seafood', name: '海鲜', icon: 'fa-fish', kcal: 100, color: '#3b82f6' },
+            { id: 'durian', name: '榴莲', icon: 'fa-lemon', kcal: 147, color: '#fef08a' },
+            { id: 'mango', name: '芒果', icon: 'fa-lemon', kcal: 60, color: '#f59e0b' },
+            { id: 'apple', name: '苹果', icon: 'fa-apple-whole', kcal: 52, color: '#ef4444' },
+            { id: 'pear', name: '梨', icon: 'fa-leaf', kcal: 42, color: '#a3e635' }
+        ];
+
+        function calculateBMR(w, h, a, g) {
+            let b = 10 * w + 6.25 * h - 5 * a; return g === 'male' ? b + 5 : b - 161;
+        }
+
+        function migrateUsers() {
+            appState.users.forEach(u => {
+                if(u.activityLevel === undefined) u.activityLevel = 1.55;
+                if(u.hasSeenManual === undefined) u.hasSeenManual = false; // 新老用户都会弹出一次说明书
+                if(u.autoSleepTime === undefined) u.autoSleepTime = '';
+                if(u.lastSleepDate === undefined) u.lastSleepDate = '';
+                
+                if(u.maxEnergy > 10000) { 
+                    u.bmr = calculateBMR(u.weight, u.height, u.age, u.gender);
+                    u.maxEnergy = Math.round(u.bmr * u.activityLevel); 
+                    u.currentEnergy = Math.min(u.currentEnergy, u.maxEnergy); 
+                }
+            });
+        }
+
+        function initApp() {
+            const savedStr = safeGet('humanBatteryApp');
+            if (savedStr) {
+                try {
+                    const parsed = JSON.parse(savedStr);
+                    if (parsed && Array.isArray(parsed.users)) {
+                        appState = parsed;
+                        migrateUsers(); 
+                        if (appState.users.length > 0 && appState.currentUserIndex >= 0) {
+                            processTimeDrain();
+                            checkAutoSleep();
+                            navTo('home');
+                            return;
+                        }
+                    }
+                } catch(e) {}
+            }
+            navTo('setup');
+        }
+
+        function saveState() {
+            appState.lastUpdateTime = Date.now();
+            safeSet('humanBatteryApp', JSON.stringify(appState));
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 3000);
+        }
+
+        function closeAppInfoModal() {
+            document.getElementById('appInfoModal').style.display = 'none';
+        }
+
+        function saveUserAndStart() {
+            const name = document.getElementById('setupName').value || 'Master';
+            const gender = document.getElementById('setupGender').value;
+            const age = parseInt(document.getElementById('setupAge').value);
+            const height = parseInt(document.getElementById('setupHeight').value);
+            const weight = parseInt(document.getElementById('setupWeight').value);
+            const activityLevel = parseFloat(document.getElementById('setupActivity').value);
+
+            if (!age || !height || !weight) { showToast("请填写真实数据孵化宝宝！"); return; }
+
+            const bmr = calculateBMR(weight, height, age, gender);
+            const tdee = Math.round(bmr * activityLevel);
+
+            appState.users.push({
+                id: Date.now().toString(), name, gender, age, height, weight, activityLevel,
+                bmr: bmr, maxEnergy: tdee, currentEnergy: tdee,
+                hasSeenManual: false, autoSleepTime: '', lastSleepDate: ''
+            });
+            appState.currentUserIndex = appState.users.length - 1;
+            saveState(); navTo('home');
+        }
+
+        function getCurrentUser() { return appState.users[appState.currentUserIndex]; }
+        function switchUser(idx) { appState.currentUserIndex = idx; processTimeDrain(); saveState(); navTo('home'); }
+
+        function renderUserList() {
+            const list = document.getElementById('userList');
+            list.innerHTML = '';
+            appState.users.forEach((u, idx) => {
+                const isActive = idx === appState.currentUserIndex;
+                list.innerHTML += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 12px; border: 1px solid ${isActive ? '#fef08a' : '#f3f4f6'}; background: ${isActive ? '#fefce8' : 'white'};">
+                        <div style="font-weight: bold;">${u.name} <span style="font-size: 0.75rem; color: #9ca3af;">(${u.weight}kg)</span></div>
+                        ${isActive ? '<span style="font-size: 0.75rem; background: #eab308; color: white; padding: 2px 8px; border-radius: 4px;">当前</span>' : `<button onclick="switchUser(${idx})" style="color: #ca8a04; border: none; background: none; font-weight:bold;">切换</button>`}
+                    </div>`;
+            });
+        }
+
+        // --- 定时自动睡眠检查 ---
+        function checkAutoSleep() {
+            const user = getCurrentUser();
+            if (!user || !user.autoSleepTime) return;
+            
+            const now = new Date();
+            const currentHour = now.getHours().toString().padStart(2, '0');
+            const currentMinute = now.getMinutes().toString().padStart(2, '0');
+            const currentTimeStr = `${currentHour}:${currentMinute}`;
+            const currentDateStr = now.toDateString();
+
+            if (currentTimeStr === user.autoSleepTime && user.lastSleepDate !== currentDateStr) {
+                user.currentEnergy = user.maxEnergy;
+                user.lastSleepDate = currentDateStr;
+                saveState();
+                if(document.getElementById('view-home').style.display === 'block') {
+                    updateHomeUI();
+                    triggerPikaAnim('charge');
+                }
+                showToast("到达设定时间，宝宝已自动深度睡眠并充满电！");
+            }
+        }
+
+        // --- 核心电量更新 ---
+        function processTimeDrain() {
+            const user = getCurrentUser(); if (!user) return;
+            const now = Date.now(), hours = (now - appState.lastUpdateTime) / 3600000;
+            if (hours > 0) {
+                user.currentEnergy = Math.max(0, user.currentEnergy - (user.bmr / 24) * hours);
+                appState.lastUpdateTime = now; saveState();
+            }
+        }
+
+        setInterval(() => { 
+            if(appState.users.length>0) { 
+                processTimeDrain(); 
+                checkAutoSleep();
+                if(document.getElementById('view-home').style.display==='block') {
+                    updateHomeUI(); 
+                }
+            } 
+        }, 60000);
+
+        function updateHomeUI() {
+            processTimeDrain();
+            const user = getCurrentUser(); if (!user) return;
+
+            document.getElementById('homeUserName').innerText = `Hi, ${user.name}`;
+            const percent = (user.currentEnergy / user.maxEnergy) * 100;
+            
+            document.getElementById('batteryPercent').innerText = `${percent.toFixed(2)}%`;
+            document.getElementById('totalEnergyText').innerText = `${Math.round(user.currentEnergy).toLocaleString()} kcal`;
+            
+            const wh = (user.currentEnergy * KCAL_TO_WH).toFixed(0);
+            const iphones = (wh / IPHONE_17_PRO_WH).toFixed(1);
+            document.getElementById('iphoneCompareText').innerText = `约合 ${Number(wh).toLocaleString()} Wh，相当于 ${iphones} 个 iPhone 17 Pro 电池`;
+
+            const bmrRate = user.bmr / 24; 
+            const bmrWatts = (bmrRate * KCAL_TO_WH).toFixed(1);
+            let appliance = bmrWatts > 80 ? "大屏电视 (约100W)" : bmrWatts > 50 ? "游戏本待机 (约60W)" : bmrWatts > 20 ? "白炽灯泡 (约40W)" : "LED小夜灯 (约3W)";
+            
+            document.getElementById('bmrDrainText').innerText = `${bmrRate.toFixed(1)} kcal / 时`;
+            document.getElementById('applianceCompareText').innerText = `功耗约 ${bmrWatts}W，相当于${appliance}`;
+
+            const belly = document.getElementById('bellyLevel');
+            belly.style.width = `${Math.max(5, percent)}%`;
+            belly.style.background = percent > 50 ? '#22c55e' : percent > 20 ? '#eab308' : '#ef4444';
+
+            let state = 'happy';
+            if (percent >= 90) state = 'full';
+            else if (percent >= 70) state = 'happy';
+            else if (percent >= 40) state = 'normal';
+            else if (percent >= 20) state = 'tired';
+            else if (percent >= 5) state = 'sad';
+            else state = 'dead';
+            document.getElementById('pikabat').setAttribute('data-state', state);
+            
+            const env = document.getElementById('pikaEnvironment');
+            env.style.background = percent < 20 ? 'linear-gradient(180deg, #d1d5db 0%, #9ca3af 100%)' : 'linear-gradient(180deg, #ffe4e6 0%, #fff1f2 60%, #fed7aa 100%)';
+        }
+
+        // --- 深度睡眠模态框逻辑 ---
+        function openSleepModal() {
+            const user = getCurrentUser();
+            if(!user) return;
+            document.getElementById('autoSleepTimeInput').value = user.autoSleepTime || '';
+            document.getElementById('sleepModal').style.display = 'flex';
+        }
+
+        function saveAutoSleep() {
+            const user = getCurrentUser();
+            const time = document.getElementById('autoSleepTimeInput').value;
+            user.autoSleepTime = time;
+            saveState();
+            document.getElementById('sleepModal').style.display = 'none';
+            if (time) {
+                showToast(`已设置每天 ${time} 自动深度睡眠`);
+            } else {
+                showToast("已取消自动睡眠功能");
+            }
+        }
+
+        function fullCharge() {
+            const user = getCurrentUser();
+            if(!user) return;
+            user.currentEnergy = user.maxEnergy; 
+            saveState();
+            updateHomeUI();
+            triggerPikaAnim('charge');
+            document.getElementById('sleepModal').style.display = 'none';
+            showToast("宝宝经过深度睡眠，电量已充满！");
+        }
+
+        function triggerPikaAnim(type) {
+            const pika = document.getElementById('pikabat');
+            pika.classList.remove('anim-charging', 'anim-discharging');
+            void pika.offsetWidth;
+            if(type === 'charge') pika.classList.add('anim-charging');
+            else pika.classList.add('anim-discharging');
+            setTimeout(() => pika.classList.remove('anim-charging', 'anim-discharging'), 2000);
+        }
+
+        setInterval(() => {
+            const pika = document.getElementById('pikabat');
+            if(pika.classList.contains('anim-charging') || pika.classList.contains('anim-discharging') || document.getElementById('view-home').style.display !== 'block') return;
+            for(let i=0; i<10; i++) pika.classList.remove(`anim-${i}`);
+            const randomAnim = Math.floor(Math.random() * 10);
+            pika.classList.add(`anim-${randomAnim}`);
+            setTimeout(() => pika.classList.remove(`anim-${randomAnim}`), 1500);
+        }, 10000);
+
+        function modifyEnergy(amount, type) {
+            const user = getCurrentUser();
+            if(type === 'add') {
+                user.currentEnergy = Math.min(user.maxEnergy, user.currentEnergy + amount);
+                triggerPikaAnim('charge');
+            } else {
+                user.currentEnergy = Math.max(0, user.currentEnergy - amount);
+                triggerPikaAnim('discharge');
+            }
+            saveState();
+            if(document.getElementById('view-home').style.display === 'block') updateHomeUI();
+            else navTo('home');
+        }
+
+        function renderHealthStandard() {
+            const user = getCurrentUser();
+            const iw = user.gender === 'male' ? user.height - 105 : user.height - 110;
+            const idealBmr = calculateBMR(iw, user.height, user.age, user.gender);
+            const idealTdee = Math.round(idealBmr * (user.activityLevel || 1.55));
+            
+            document.getElementById('idealWeightText').innerText = `${iw} kg`;
+            document.getElementById('idealEnergyText').innerText = `${idealTdee} kcal/天`;
+            document.getElementById('idealBmrText').innerText = `${Math.round(idealBmr)} kcal/天`;
+        }
+
+        function renderHealthManage() {
+            const user = getCurrentUser();
+            const iw = user.gender === 'male' ? user.height - 105 : user.height - 110;
+            const diff = user.weight - iw;
+            let advice = Math.abs(diff) <= 2 ? "<p>宝宝容量完美！请继续保持现在的投喂和放电频率！</p>" :
+                         diff > 2 ? `<p>宝宝超载 <b>${diff} kg</b>。</p><ul style="padding-left:20px;margin-top:8px;"><li>少投喂 <b>300 kcal/天</b></li><li>多拉出去放电 <b>200 kcal/天</b></li></ul>` :
+                         `<p>宝宝营养不良 <b>${Math.abs(diff)} kg</b>。</p><ul style="padding-left:20px;margin-top:8px;"><li>多投喂蛋白质 <b>400 kcal/天</b></li></ul>`;
+            document.getElementById('healthAdviceText').innerHTML = advice;
+        }
+
+        function renderFoodList() {
+            const c = document.getElementById('foodGridContainer');
+            c.innerHTML = '';
+            FOODS.forEach(f => {
+                c.innerHTML += `
+                    <div class="food-item" onclick="openFoodModal('${f.id}')">
+                        <i class="fas ${f.icon}" style="color: ${f.color}; font-size: 1.8rem; margin-bottom: 6px;"></i>
+                        <span style="font-size: 0.75rem; font-weight: bold; color: #4b5563;">${f.name}</span>
+                    </div>`;
+            });
+        }
+
+        let currentFood = null;
+        function openFoodModal(id) {
+            currentFood = FOODS.find(f => f.id === id);
+            document.getElementById('foodModalTitle').innerText = currentFood.name;
+            document.getElementById('foodModalIcon').className = `fas ${currentFood.icon} text-4xl mb-4`;
+            document.getElementById('foodModalIcon').style.color = currentFood.color;
+            document.getElementById('foodModalKcal').innerText = `每100克含有 ${currentFood.kcal} kcal`;
+            document.getElementById('foodGramsInput').value = '';
+            document.getElementById('foodInputModal').style.display = 'flex';
+        }
+
+        function closeFoodModals() {
+            document.getElementById('foodInputModal').style.display = 'none';
+            document.getElementById('customFoodModal').style.display = 'none';
+        }
+
+        function consumeFoodEnergy() {
+            const grams = parseFloat(document.getElementById('foodGramsInput').value);
+            if (!grams || grams <= 0) { showToast("请输入准确重量"); return; }
+            const totalKcal = (grams / 100) * currentFood.kcal;
+            modifyEnergy(totalKcal, 'add');
+            closeFoodModals();
+            showToast(`成功充入 ${totalKcal.toFixed(0)} kcal电量！`);
+        }
+
+        function openCustomFoodModal() {
+            document.getElementById('customFoodName').value = '';
+            document.getElementById('customFoodGrams').value = '';
+            document.getElementById('customFoodModal').style.display = 'flex';
+        }
+
+        function consumeCustomFood() {
+            const kcal = parseFloat(document.getElementById('customFoodGrams').value);
+            if (!kcal || kcal <= 0) { showToast("请输入有效热量"); return; }
+            modifyEnergy(kcal, 'add');
+            closeFoodModals();
+            showToast(`成功充入 ${kcal.toFixed(0)} kcal电量！`);
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            document.getElementById('paymentReasonText').innerText = "请付费升级高级版解锁AI拍照识别功能";
+            document.getElementById('paymentModal').style.display = 'flex';
+            event.target.value = ''; 
+        }
+
+        function renderActivityList() {
+            const c = document.getElementById('activityListContainer');
+            c.innerHTML = '';
+            ACTIVITIES.forEach(a => {
+                c.innerHTML += `
+                    <div onclick="openActivityModal('${a.id}')" style="background: ${a.bg}; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                        <i class="fas ${a.icon}" style="color: ${a.color}; font-size: 2rem; margin-bottom: 8px;"></i>
+                        <span style="font-size: 0.8rem; font-weight: bold; color: #374151;">${a.name}</span>
+                    </div>`;
+            });
+        }
+        
+        let currentActivity = null;
+        function openActivityModal(id) {
+            currentActivity = ACTIVITIES.find(a => a.id === id);
+            document.getElementById('modalTitle').innerText = currentActivity.name;
+            document.getElementById('modalIcon').className = `fas ${currentActivity.icon}`;
+            document.getElementById('modalIcon').style.color = currentActivity.color;
+            
+            if (id === 'other') document.getElementById('manualActName').style.display = 'block';
+            else document.getElementById('manualActName').style.display = 'none';
+
+            document.getElementById('manualDuration').value = '';
+            document.getElementById('manualBurn').innerText = '0';
+            document.getElementById('activityModal').style.display = 'flex';
+        }
+        function closeActivityModal() { document.getElementById('activityModal').style.display = 'none'; }
+        
+        function calcManualBurn() {
+            const mins = parseFloat(document.getElementById('manualDuration').value) || 0;
+            document.getElementById('manualBurn').innerText = (currentActivity.met * getCurrentUser().weight * (mins/60)).toFixed(1);
+        }
+        function consumeEnergyManual() {
+            const mins = parseFloat(document.getElementById('manualDuration').value);
+            if(!mins || mins<=0) { showToast("时长无效"); return; }
+            modifyEnergy(currentActivity.met * getCurrentUser().weight * (mins/60), 'subtract');
+            closeActivityModal();
+            showToast("成功让宝宝放电！");
+        }
+
+        initApp();
+    </script>
+</body>
+</html>
